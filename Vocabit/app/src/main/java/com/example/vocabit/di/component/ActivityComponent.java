@@ -10,6 +10,7 @@ import dagger.Component;
 @Component(modules = {ActivityModule.class}, dependencies = AppComponent.class)
 public interface ActivityComponent {
     void inject(LoginActivity loginActivity);
+    void inject(MainActivity mainActivity);
 
 }
 

@@ -11,6 +11,7 @@ import com.example.vocabit.data.Repository;
 import com.example.vocabit.di.scope.ActivityScope;
 import com.example.vocabit.ui.base.activity.BaseActivity;
 import com.example.vocabit.ui.login.LoginViewModel;
+import com.example.vocabit.ui.main.MainViewModel;
 import com.example.vocabit.utils.GetInfo;
 
 import javax.inject.Named;
@@ -42,13 +43,13 @@ public class ActivityModule {
     }
 
 
-//    @Provides
-//    @ActivityScope
-//    MainViewModel provideMainViewModel(Repository repository, Context application) {
-//        Supplier<MainViewModel> supplier = () -> new MainViewModel(repository, (MVVMApplication)application);
-//        ViewModelProviderFactory<MainViewModel> factory = new ViewModelProviderFactory<>(MainViewModel.class, supplier);
-//        return new ViewModelProvider(activity, factory).get(MainViewModel.class);
-//    }
+    @Provides
+    @ActivityScope
+    MainViewModel provideMainViewModel(Repository repository, Context application) {
+        Supplier<MainViewModel> supplier = () -> new MainViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<MainViewModel> factory = new ViewModelProviderFactory<>(MainViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(MainViewModel.class);
+    }
 
     @Provides
     @ActivityScope

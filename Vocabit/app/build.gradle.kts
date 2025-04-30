@@ -90,4 +90,8 @@ dependencies {
 
     implementation (libs.okhttp)
     implementation (libs.logging.interceptor)
+
+    // Glide
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
 }
