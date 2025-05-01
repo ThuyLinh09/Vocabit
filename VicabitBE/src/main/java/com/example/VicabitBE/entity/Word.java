@@ -1,7 +1,7 @@
 package com.example.VicabitBE.entity;
 
-import com.example.VicabitBE.Enum.DifficultyLevel;
-import com.example.VicabitBE.Enum.PartOfSpeech;
+import com.example.VicabitBE.enums.DifficultyLevel;
+import com.example.VicabitBE.enums.PartOfSpeech;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

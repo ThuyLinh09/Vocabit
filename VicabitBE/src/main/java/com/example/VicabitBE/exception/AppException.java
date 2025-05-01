@@ -1,6 +1,6 @@
 package com.example.VicabitBE.exception;
 
-import com.example.VicabitBE.Enum.ErrorCode;
+import com.example.VicabitBE.enums.ErrorCode;
 
 public class AppException extends RuntimeException{
     public AppException(ErrorCode errorCode) {

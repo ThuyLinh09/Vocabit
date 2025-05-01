@@ -1,4 +1,4 @@
-package com.example.VicabitBE.Enum;
+package com.example.VicabitBE.enums;
 
 public enum PartOfSpeech {
     Noun,

@@ -1,8 +1,9 @@
 package com.example.VicabitBE.exception;
 
-import com.example.VicabitBE.Enum.ErrorCode;
-import com.example.VicabitBE.dto.request.ApiResponse;
+import com.example.VicabitBE.enums.ErrorCode;
+import com.example.VicabitBE.dto.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,23 +25,38 @@ public class GlobalExceptionHandler {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMessage());
-        return ResponseEntity.badRequest().body(apiResponse);
+        return ResponseEntity
+                .status(errorCode.getStatusCode())
+                .body(apiResponse);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     ResponseEntity<ApiResponse> handlingMethodArgumentNotValidException(MethodArgumentNotValidException e) {
-        String enumkey = e.getFieldError().getDefaultMessage();
+        String enumKey = e.getBindingResult().getFieldError().getDefaultMessage();
         ErrorCode errorCode = ErrorCode.INVALID_KEY;
 
         try {
-            errorCode = ErrorCode.valueOf(enumkey);
-        }catch (IllegalArgumentException exception){
-
+            errorCode = ErrorCode.valueOf(enumKey);
+        } catch (IllegalArgumentException exception) {
         }
-        ApiResponse apiResponse = new ApiResponse();
 
+        ApiResponse apiResponse = new ApiResponse();
         apiResponse.setCode(errorCode.getCode());
         apiResponse.setMessage(errorCode.getMessage());
         return ResponseEntity.badRequest().body(apiResponse);
     }
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiResponse> handlingAccessDeniedException(AccessDeniedException e) {
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+
+        return ResponseEntity.status(errorCode.getStatusCode()).body(
+                ApiResponse.builder()
+                        .code(errorCode.getCode())
+                        .message(errorCode.getMessage())
+                        .build()
+        );
+    }
+
+
+
 }

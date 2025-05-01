@@ -1,4 +1,4 @@
-package com.example.VicabitBE.dto.request;
+package com.example.VicabitBE.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;

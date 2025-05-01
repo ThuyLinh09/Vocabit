@@ -1,8 +1,8 @@
 package com.example.VicabitBE.dto.request;
 
 
-import com.example.VicabitBE.Enum.DifficultyLevel;
-import com.example.VicabitBE.Enum.PartOfSpeech;
+import com.example.VicabitBE.enums.DifficultyLevel;
+import com.example.VicabitBE.enums.PartOfSpeech;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

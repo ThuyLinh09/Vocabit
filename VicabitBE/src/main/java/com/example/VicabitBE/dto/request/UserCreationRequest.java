@@ -1,6 +1,5 @@
 package com.example.VicabitBE.dto.request;
 
-import com.example.VicabitBE.Enum.ErrorCode;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
