@@ -2,6 +2,7 @@ package com.example.vocabit.data.remote;
 
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
 import com.example.vocabit.data.model.api.request.login.ReLoginRequest;
+import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.login.LoginResponse;
 import com.example.vocabit.data.model.api.response.login.ReLoginResponse;
 
@@ -23,6 +24,7 @@ public interface ApiService {
     //Login
     @POST("auth/log-in")
     Observable<LoginResponse> login(@Body LoginRequest request);
+
 
     @POST("auth/log-in")
     Observable<ReLoginResponse> reLogin(@Body ReLoginRequest request);

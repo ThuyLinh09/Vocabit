@@ -6,25 +6,23 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Word {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    Long id;
-    String word;
-    String meaning;
-    String example;
-    String pronunciation;
-    String audioUrl;
-    DifficultyLevel difficultyLevel;
-    PartOfSpeech partOfSpeech;
-    String imageUrl;
+    private Long id;
+    private String word;
+    private String meaning;
+    private String imageUrl;
+    private Long unit;
+
 }

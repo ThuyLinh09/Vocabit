@@ -8,10 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ResponseWrapper<T> {
-    private boolean result;
-    private T data;
-    private String message;
-    private String code;
-    private String firebaseUrl;
-    private String urlBase;
+    private T result;
+    private int code;
 }

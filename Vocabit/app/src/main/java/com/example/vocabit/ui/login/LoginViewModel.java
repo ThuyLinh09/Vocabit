@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer;
 import com.example.vocabit.MVVMApplication;
 import com.example.vocabit.R;
 import com.example.vocabit.data.Repository;
+import com.example.vocabit.data.model.api.request.login.LoginRequest;
 import com.example.vocabit.data.model.api.request.login.ReLoginRequest;
 import com.example.vocabit.ui.base.activity.BaseViewModel;
 import com.example.vocabit.utils.NetworkUtils;
@@ -60,15 +61,14 @@ public class LoginViewModel extends BaseViewModel {
     }
 
     public void onLoginClicked() {
-        String serial = context.getString(R.string.serial);
         String pass = password.getValue();
         String phone = phoneNumber.getValue();
+        doLogin(pass, phone);
 
-        doLogin(pass, phone, serial);
     }
-    private void doLogin(String password, String phoneNumber, String deviceSerial) {
-        ReLoginRequest request = new ReLoginRequest(phoneNumber, password,deviceSerial);
-        compositeDisposable.add(repository.getApiService().reLogin(request)
+    private void doLogin(String password, String phoneNumber) {
+        LoginRequest request = new LoginRequest(phoneNumber, password);
+        compositeDisposable.add(repository.getApiService().login(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(throwable ->
@@ -84,7 +84,7 @@ public class LoginViewModel extends BaseViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-                            repository.getSharedPreferences().setToken(response.getAccess_token());
+                            repository.getSharedPreferences().setToken(response.getResult().getToken());
                             Toast.makeText(context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                             loginSuccess.setValue(true);
                         }, throwable -> {
