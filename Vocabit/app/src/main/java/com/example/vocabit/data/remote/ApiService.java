@@ -21,10 +21,10 @@ import retrofit2.http.Query;
 
 public interface ApiService {
     //Login
-    @POST("api/token")
+    @POST("auth/log-in")
     Observable<LoginResponse> login(@Body LoginRequest request);
 
-    @POST("api/token")
+    @POST("auth/log-in")
     Observable<ReLoginResponse> reLogin(@Body ReLoginRequest request);
 
 }
