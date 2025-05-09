@@ -14,9 +14,6 @@ import java.util.List;
 public interface UserMapper {
     User toUser(UserCreationRequest request);
     void updateUser(@MappingTarget  User user ,UserUpdateRequest request);
-
-//    @Mapping(source = "name", target = "username")
-//    @Mapping(target = "name", ignore = true)
     UserResponse toUserResponse(User user);
     List<UserResponse> toUsersResponse(List<User> users);
 

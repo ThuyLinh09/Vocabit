@@ -1,21 +1,19 @@
-package com.example.VicabitBE.dto.response;
+package com.example.vocabit.data.model.api.request.register;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
-
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
-    private Long id;
+public class RegisterRequest {
     private String username;
+
+    private String password;
+
     private String name;
     private String email;
+
     private String avatar;
-    private Set<String> roles;
 }
