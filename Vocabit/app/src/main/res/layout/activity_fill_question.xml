@@ -33,7 +33,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption1"
-                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{fillQuestionViewModel.option1}"
@@ -41,7 +40,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption2"
-                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{fillQuestionViewModel.option2}"
@@ -49,7 +47,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption3"
-                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{fillQuestionViewModel.option3}"
@@ -57,7 +54,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption4"
-                style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@{fillQuestionViewModel.option4}"
