@@ -8,9 +8,14 @@ import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
+import com.cloudinary.android.MediaManager;
+import com.example.vocabit.data.Repository;
 import com.example.vocabit.di.component.AppComponent;
 import com.example.vocabit.di.component.DaggerAppComponent;
 import com.example.vocabit.utils.DialogUtils;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -27,11 +32,14 @@ public class MVVMApplication extends Application implements LifecycleObserver {
     @Getter
     private AppComponent appComponent;
     private Boolean inBackground;
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+        initCloudinary();
 
-//        // Enable firebase log
+//        // Enable firebase    log
 //        FirebaseCrashlytics firebaseCrashlytics = FirebaseCrashlytics.getInstance();
 //        firebaseCrashlytics.setCrashlyticsCollectionEnabled(true);
 
@@ -86,6 +94,20 @@ public class MVVMApplication extends Application implements LifecycleObserver {
                         (dialogInterface, i) -> System.exit(0))
         );
         return subject;
+    }
+    private void initCloudinary() {
+        Map<String, String> config = new HashMap<>();
+        config.put("cloud_name", "dxxx4z4nu");      // Thay bằng cloud name của bạn
+        config.put("api_key", "662658556213936");   // Thay bằng API Key thật
+        config.put("api_secret", "DR0svq4aB7k8CX3GCzQpATeeI1Q"); // Thay bằng API Secret thật
+        //config.put("upload_preset", "your_upload_preset"); // Nếu dùng preset
+
+        MediaManager.init(this, config);
+    }
+
+
+    public Repository getRepository() {
+        return appComponent.getRepository();
     }
 
 }

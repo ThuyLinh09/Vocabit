@@ -20,6 +20,7 @@ public class User {
     String password;
     String name;
     String email;
+    String avatar;
 
     @ElementCollection
     Set<String> roles;

@@ -12,6 +12,7 @@
 
         <import type="android.view.View" />
     </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,7 +39,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="30dp"
             android:background="@drawable/shape_corner"
-            android:hint="Số điện thoại"
+            android:hint="Tên đăng nhập"
             android:inputType="text"
             android:paddingStart="10dp"
             android:text="@={loginViewModel.phoneNumber}"
@@ -70,12 +71,9 @@
                 android:inputType="textPassword"
                 android:paddingStart="10dp"
                 android:textColor="@color/black"
-                android:paddingTop="0dp"
-                android:paddingBottom="0dp"
                 android:textColorHint="@color/border_gray"
                 android:text="@={loginViewModel.password}" />
         </com.google.android.material.textfield.TextInputLayout>
-
 
         <TextView
             android:id="@+id/textView2"
@@ -109,8 +107,19 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintVertical_bias="0.0" />
 
+        <TextView
+            android:id="@+id/textRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có tài khoản? Đăng ký ngay"
+            android:textColor="@color/icon_blue"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:onClick="navigateToRegister"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 </layout>

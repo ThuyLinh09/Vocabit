@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -18,6 +19,7 @@ import com.example.vocabit.di.component.ActivityComponent;
 
 import com.example.vocabit.ui.base.activity.BaseActivity;
 import com.example.vocabit.ui.main.MainActivity;
+import com.example.vocabit.ui.register.RegisterActivity;
 
 
 public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewModel> {
@@ -68,4 +70,9 @@ public class LoginActivity extends BaseActivity<ActivityLoginBinding, LoginViewM
         startActivity(intent);
         finish();
     }
+    public void navigateToRegister(View view) {
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
+    }
+
 }

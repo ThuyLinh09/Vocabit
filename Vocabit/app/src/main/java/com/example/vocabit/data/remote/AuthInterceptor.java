@@ -47,7 +47,7 @@ public class AuthInterceptor implements Interceptor {
 
         String url = originalRequest.url().toString();
         String token;
-        if(url.contains("api/token")) {
+        if(url.contains("auth/log-in")) {
             token = appPreferences.getBasicAuth();
             newRequestBuilder.addHeader("Authorization", "Basic " + token);
         }else {

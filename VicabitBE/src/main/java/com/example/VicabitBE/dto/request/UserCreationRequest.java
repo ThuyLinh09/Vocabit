@@ -23,4 +23,6 @@ public class UserCreationRequest {
     @Email(message = "EMAIL_INVALID")
     private String email;
 
+    private String avatar;
+
 }
