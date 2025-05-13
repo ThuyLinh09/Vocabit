@@ -2,14 +2,11 @@ package com.example.vocabit.ui.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.example.vocabit.BR;
 import com.example.vocabit.R;
 import com.example.vocabit.databinding.FragmentProfileBinding;
@@ -72,7 +69,7 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         startActivity(intent);
     }
 
-    public void onViewProfile(){
+    public void onViewProfileClicked(){
         Intent intent= new Intent(getContext(), UserInfoActivity.class);
         startActivity(intent);
     }

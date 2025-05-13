@@ -28,6 +28,7 @@ public class ProfileViewModel extends BaseFragmentViewModel {
         return clickLogout;
     }
     public final ObservableField<String> fullname = new ObservableField<>("");
+    public final ObservableField<String> avatarUrl = new ObservableField<>("");
     public final ObservableField<String> departmentName = new ObservableField<>("");
 
     public ObservableField<Bitmap> avatar = new ObservableField<>();
@@ -46,5 +47,6 @@ public class ProfileViewModel extends BaseFragmentViewModel {
         repository.getSharedPreferences().setToken("");
         clickLogout.setValue(true);
     }
+
 
 }

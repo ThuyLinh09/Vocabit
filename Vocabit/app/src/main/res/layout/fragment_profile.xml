@@ -52,7 +52,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{profileViewModel.avatarUrl}"
                     android:src="@drawable/ic_profile" />
             </com.google.android.material.card.MaterialCardView>
 
