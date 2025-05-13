@@ -19,7 +19,6 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.vocabit.MVVMApplication;
-import com.example.vocabit.R;
 import com.example.vocabit.data.Repository;
 import com.example.vocabit.databinding.ActivityRegisterBinding;
 import com.example.vocabit.ui.login.LoginActivity;
