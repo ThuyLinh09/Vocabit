@@ -38,6 +38,7 @@ public class RegisterViewModel extends BaseViewModel {
 
     public final ObservableField<Boolean> isFormValid = new ObservableField<>(false);
     public final MutableLiveData<Boolean> registerSuccess = new MutableLiveData<>();
+
     public LiveData<Boolean> getRegisterSuccess() {
         return registerSuccess;
     }
@@ -66,7 +67,7 @@ public class RegisterViewModel extends BaseViewModel {
                 !TextUtils.isEmpty(password.getValue()) &&
                 !TextUtils.isEmpty(name.getValue()) &&
                 !TextUtils.isEmpty(email.getValue()) &&
-                !TextUtils.isEmpty(avatarUrl.getValue())&&
+                !TextUtils.isEmpty(avatarUrl.getValue()) &&
                 !TextUtils.isEmpty(classLevel.getValue());
     }
 
@@ -75,3 +76,5 @@ public class RegisterViewModel extends BaseViewModel {
             Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
+    }
+}
