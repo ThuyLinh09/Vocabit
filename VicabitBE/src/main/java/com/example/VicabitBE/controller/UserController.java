@@ -42,10 +42,9 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/{id}")
-    UserResponse findUserById(@PathVariable("id") Long id) {
-
-        return userService.findById(id);
+    @GetMapping("/{username}")
+    UserResponse findUserByUsername(@PathVariable("username") String username) {
+        return userService.findByUsername(username);
     }
     @PutMapping("/{username}")
     UserResponse updateUser(@PathVariable("username") String username, @RequestBody UserUpdateRequest user) {

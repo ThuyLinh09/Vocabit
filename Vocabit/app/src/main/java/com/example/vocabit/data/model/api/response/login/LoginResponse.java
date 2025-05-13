@@ -1,5 +1,6 @@
 package com.example.vocabit.data.model.api.response.login;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginResponse {
-    String token;
-    boolean authenticated;
+    @SerializedName("token")
+    private String token;
+
+    @SerializedName("authenticated")
+    private boolean authenticated;
 }

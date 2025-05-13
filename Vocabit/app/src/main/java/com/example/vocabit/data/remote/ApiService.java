@@ -4,7 +4,9 @@ import com.example.vocabit.data.model.api.request.changepassword.ChangePasswordR
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
 import com.example.vocabit.data.model.api.request.login.ReLoginRequest;
 import com.example.vocabit.data.model.api.request.register.RegisterRequest;
+import com.example.vocabit.data.model.api.response.ApiResponse;
 import com.example.vocabit.data.model.api.response.ResponseWrapper;
+import com.example.vocabit.data.model.api.response.info.UserResponse;
 import com.example.vocabit.data.model.api.response.login.LoginResponse;
 import com.example.vocabit.data.model.api.response.login.ReLoginResponse;
 import com.example.vocabit.data.model.api.response.register.RegisterResponse;
@@ -27,7 +29,7 @@ import retrofit2.http.Query;
 public interface ApiService {
     //Login
     @POST("auth/log-in")
-    Observable<LoginResponse> login(@Body LoginRequest request);
+    Observable<ApiResponse<LoginResponse>> login(@Body LoginRequest request);
 
 
     @POST("auth/log-in")
@@ -36,7 +38,10 @@ public interface ApiService {
     @POST("users")
     Observable<RegisterResponse> register(@Body RegisterRequest request);
 
-    @POST("users/{id}")
-    Completable changePassword(@Body ChangePasswordRequest request);
+    @PUT("users/{username}")
+    Completable changePassword(@Path("username") String username, @Body ChangePasswordRequest request);
+
+    @GET("users/{username}")
+    Observable<UserResponse> getInfoUser(@Path("username") String username);
 
 }

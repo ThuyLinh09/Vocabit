@@ -1,74 +1,71 @@
 package com.example.vocabit.ui.userinfo;
 
 import android.content.Context;
-import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.databinding.ObservableField;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModel;
 
 import com.example.vocabit.MVVMApplication;
-import com.example.vocabit.R;
-import com.example.vocabit.data.Repository;
-import com.example.vocabit.ui.base.activity.BaseViewModel;
-import com.example.vocabit.utils.NetworkUtils;
+import com.example.vocabit.data.model.api.response.info.UserResponse;
+import com.example.vocabit.data.remote.ApiService;
+import com.example.vocabit.utils.JwtUtils;
+import com.example.vocabit.utils.SharedPreferencesManager;
 
-import io.reactivex.rxjava3.core.ObservableSource;
-import io.reactivex.rxjava3.functions.Function;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
-import retrofit2.HttpException;
-import timber.log.Timber;
+public class UserInfoViewModel extends ViewModel {
 
-public class UserInfoViewModel extends BaseViewModel {
+    public final ObservableField<String> fullName = new ObservableField<>("");
+    public final ObservableField<String> email = new ObservableField<>("");
+    public final ObservableField<String> avatarUrl = new ObservableField<>("");
+    public final ObservableField<String> classLevel = new ObservableField<>("");
+
+    private final SharedPreferencesManager prefs;
+    private final ApiService apiService;
     private final Context context;
+    private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
-    public final MutableLiveData<String> fullName = new MutableLiveData<>("");
-    public final MutableLiveData<String> email = new MutableLiveData<>("");
-    public final MutableLiveData<String> avatarUrl = new MutableLiveData<>("");
+    public UserInfoViewModel(Context context) {
+        this.context = context;
+        this.prefs = SharedPreferencesManager.getInstance(context);
+        this.apiService = ((MVVMApplication) context.getApplicationContext()).getRepository().getApiService();
 
-    public final ObservableField<Boolean> isFormValid = new ObservableField<>(false);
-    public final MutableLiveData<Boolean> navigateToEdit = new MutableLiveData<>(false);
-
-    public LiveData<Boolean> getNavigateToEdit() {
-        return navigateToEdit;
+        loadUserInfo();
     }
 
-    public UserInfoViewModel(Repository repository, MVVMApplication application) {
-        super(repository, application);
-        this.context = application.getApplicationContext();
+    private void loadUserInfo() {
+        String token = prefs.getToken();
+        if (token == null) {
+            Toast.makeText(context, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        MediatorLiveData<Boolean> formValidLiveData = new MediatorLiveData<>();
+        String username = JwtUtils.getUsernameFromToken(token);
 
-        Observer<String> formObserver = value -> formValidLiveData.setValue(validateForm());
-
-        formValidLiveData.addSource(fullName, formObserver);
-        formValidLiveData.addSource(email, formObserver);
-        formValidLiveData.observeForever(isFormValid::set);
+        compositeDisposable.add(apiService.getInfoUser(username)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::bindUserInfo,
+                        throwable -> {
+                            Log.e("UserInfoViewModel", "Lỗi khi tải thông tin", throwable);
+                            Toast.makeText(context, "Lỗi khi tải thông tin", Toast.LENGTH_SHORT).show();
+                        }));
     }
 
-    private boolean validateForm() {
-        return !TextUtils.isEmpty(fullName.getValue()) && !TextUtils.isEmpty(email.getValue());
+    private void bindUserInfo(UserResponse user) {
+        fullName.set(user.getName());
+        email.set(user.getEmail());
+        avatarUrl.set(user.getAvatar());
+        classLevel.set(user.getClassLevel().toString());
     }
 
-    public void onEditInfoClicked() {
-        navigateToEdit.setValue(true);
-    }
-
-    public void doneNavigating() {
-        navigateToEdit.setValue(false);
-    }
-
-    public void updateUserInfo(String newName, String newEmail) {
-        fullName.setValue(newName);
-        email.setValue(newEmail);
-    }
-
-    public void updateAvatarUrl(String newAvatarUrl) {
-        avatarUrl.setValue(newAvatarUrl);
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        compositeDisposable.clear();
     }
 }

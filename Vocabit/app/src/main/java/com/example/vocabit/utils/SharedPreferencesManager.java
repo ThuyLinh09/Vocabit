@@ -8,12 +8,21 @@ import com.auth0.android.jwt.JWT;
 public class SharedPreferencesManager {
 
     private static final String PREF_NAME = "vocabit_prefs";
-    private static final String KEY_TOKEN = "TOKEN";
+    private static final String KEY_TOKEN = "auth_token";
 
+    private static SharedPreferencesManager instance;
     private final SharedPreferences sharedPreferences;
 
-    public SharedPreferencesManager(Context context) {
-        sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    private SharedPreferencesManager(Context context) {
+        sharedPreferences = context.getApplicationContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+    }
+
+    // Singleton getter
+    public static synchronized SharedPreferencesManager getInstance(Context context) {
+        if (instance == null) {
+            instance = new SharedPreferencesManager(context);
+        }
+        return instance;
     }
 
     public void setToken(String token) {
@@ -26,18 +35,5 @@ public class SharedPreferencesManager {
 
     public void clearToken() {
         sharedPreferences.edit().remove(KEY_TOKEN).apply();
-    }
-
-    public String getUsernameFromToken() {
-        String token = getToken();
-        if (token == null) return null;
-
-        try {
-            JWT jwt = new JWT(token);
-            return jwt.getClaim("username").asString();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 }

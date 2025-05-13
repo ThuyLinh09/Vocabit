@@ -61,8 +61,13 @@ public class UserService {
     }
     public UserResponse updateUser(String username, UserUpdateRequest userUpdateRequest) {
         User user = userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
+        userUpdateRequest.setNewPassword(passwordEncoder.encode(userUpdateRequest.getNewPassword()));
         userMapper.updateUser(user, userUpdateRequest);
         return userMapper.toUserResponse(userRepository.save(user));
+    }
+    public UserResponse findByUsername(String username) {
+        log.info("Finding user by name {}", username);
+        return userMapper.toUserResponse(userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found")));
     }
 
     public void deleteUser(Long id) {
