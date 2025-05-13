@@ -5,46 +5,54 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.vocabit.MVVMApplication;
 import com.example.vocabit.data.Repository;
+import com.example.vocabit.data.model.api.response.practice.PracticeResponse;
 import com.example.vocabit.ui.base.fragment.BaseFragmentViewModel;
+import com.example.vocabit.utils.NetworkUtils;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import timber.log.Timber;
 
 public class PracticeViewModel extends BaseFragmentViewModel {
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private final MutableLiveData<Integer> currentPage = new MutableLiveData<>(0);
-    private final MutableLiveData<Integer> totalPages = new MutableLiveData<>(null);
-
-    public LiveData<Integer> getCurrentPage() {
-        return currentPage;
+    private final MutableLiveData<List<PracticeResponse>> practiceList = new MutableLiveData<>();
+    public LiveData<List<PracticeResponse>> getPracticeList() {
+        return practiceList;
     }
-
-    public LiveData<Integer> getTotalPages() {
-        return totalPages;
-    }
-
-
 
     @Inject
     public PracticeViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
-        fetchMessageList(0, 20, null);
+        fetchPracticeList();
     }
 
-    public void fetchMessageList(int page, int size, Runnable onDone) {
-        if (page == 0) {
-            totalPages.setValue(null);
-        }
-
-        Integer totalPagesValue = totalPages.getValue();
-        if (totalPagesValue != null && page >= totalPagesValue) {
-            if (onDone != null) onDone.run();
-            return;
-        }
-
+    private void fetchPracticeList() {
         showLoading();
-
+        compositeDisposable.add(repository.getApiService().getPractices()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwable ->
+                        throwable.flatMap(throwable1 -> {
+                            if (NetworkUtils.checkNetworkError(throwable1)) {
+                                hideLoading();
+                                return application.showDialogNoInternetAccess();
+                            } else {
+                                return io.reactivex.rxjava3.core.Observable.error(throwable1);
+                            }
+                        })
+                )
+                .subscribe(response -> {
+                    hideLoading();
+                    practiceList.setValue(response.getResult());
+                }, throwable -> {
+                    hideLoading();
+                    Timber.e(throwable);
+                }));
     }
 
 

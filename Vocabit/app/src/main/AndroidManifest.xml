@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
@@ -26,6 +27,18 @@
             android:name=".ui.register.RegisterActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".ui.matchQuestion.MatchQuestionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.extraLetter.ExtraLetterQuestionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.fillQuestion.FillQuestionActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.imageQuestion.ImageQuestionActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">
