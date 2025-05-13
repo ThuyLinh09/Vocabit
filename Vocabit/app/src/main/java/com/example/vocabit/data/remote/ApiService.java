@@ -1,32 +1,46 @@
 package com.example.vocabit.data.remote;
 
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
-import com.example.vocabit.data.model.api.request.login.ReLoginRequest;
+import com.example.vocabit.data.model.api.response.extraLetter.ExtraLetterQuestionResponse;
+import com.example.vocabit.data.model.api.response.fillQuestion.FillQuestionResponse;
+import com.example.vocabit.data.model.api.response.imageQuestion.ImageQuestionResponse;
+import com.example.vocabit.data.model.api.response.matchQuestion.MatchQuestionResponse;
+import com.example.vocabit.data.model.api.response.practice.PracticeResponse;
 import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.login.LoginResponse;
-import com.example.vocabit.data.model.api.response.login.ReLoginResponse;
+
+import java.util.List;
 
 import io.reactivex.rxjava3.core.Observable;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Part;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
 public interface ApiService {
     //Login
     @POST("auth/log-in")
-    Observable<LoginResponse> login(@Body LoginRequest request);
+    Observable<ResponseWrapper<LoginResponse>> login(@Body LoginRequest request);
 
+    @GET("practices")
+    Observable<ResponseWrapper<List<PracticeResponse>>> getPractices();
 
-    @POST("auth/log-in")
-    Observable<ReLoginResponse> reLogin(@Body ReLoginRequest request);
-
+    @GET("questions/image-to-text")
+    Observable<ResponseWrapper<List<ImageQuestionResponse>>> getImageQuestions(
+            @Query("unit") int unit
+    );
+    @GET("questions/fill-in-blank")
+    Observable<ResponseWrapper<List<FillQuestionResponse>>> getFillQuestions(
+            @Query("unit") int unit
+    );
+    @GET("questions/extra-letter")
+    Observable<ResponseWrapper<List<ExtraLetterQuestionResponse>>> getExtraLetterQuestions(
+            @Query("unit") int unit
+    );
+    //
+    @GET("questions/match")
+    Observable<ResponseWrapper<List<MatchQuestionResponse>>> getMatchQuestions(
+            @Query("unit") int unit
+    );
 }
