@@ -47,9 +47,9 @@ public class UserController {
 
         return userService.findById(id);
     }
-    @PutMapping("/{id}")
-    UserResponse updateUser(@PathVariable("id") Long id, @RequestBody UserUpdateRequest user) {
-        return userService.updateUser(id, user);
+    @PutMapping("/{username}")
+    UserResponse updateUser(@PathVariable("username") String username, @RequestBody UserUpdateRequest user) {
+        return userService.updateUser(username, user);
     }
 
     @DeleteMapping("/{id}")

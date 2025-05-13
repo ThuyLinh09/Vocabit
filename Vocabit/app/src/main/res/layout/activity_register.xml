@@ -107,6 +107,23 @@
                     android:text="@={viewModel.name}" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Spinner chọn số từ 1 đến 5 -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Chọn lớp của bạn"
+                android:textColor="@color/black"
+                android:textSize="16sp" />
+
+            <Spinner
+                android:id="@+id/spinnerClass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:entries="@array/class_array"
+                android:spinnerMode="dropdown" />
+
             <!-- Email field -->
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

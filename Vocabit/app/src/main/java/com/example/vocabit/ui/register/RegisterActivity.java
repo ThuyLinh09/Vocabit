@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -37,43 +39,66 @@ public class RegisterActivity extends AppCompatActivity {
         binding = ActivityRegisterBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Set padding for system bars
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        Repository repository = ((MVVMApplication) getApplication()).getRepository(); // hoặc lấy từ DI nếu có
+        // Initialize ViewModel and Repository
+        Repository repository = ((MVVMApplication) getApplication()).getRepository();
         RegisterViewModelFactory factory = new RegisterViewModelFactory(repository, (MVVMApplication) getApplication());
         viewModel = new ViewModelProvider(this, factory).get(RegisterViewModel.class);
 
+        // Bind ViewModel and lifecycle to layout
         binding.setViewModel(viewModel);
         binding.setLifecycleOwner(this);
 
+        // Observe the avatar selection event to open the image picker
         viewModel.chooseAvatarEvent.observe(this, unused -> openImagePicker());
 
+        // Observe avatar URL to update UI if necessary
         viewModel.avatarUrl.observe(this, url -> {
             if (url != null && !url.isEmpty()) {
-                // Optional: Load with Glide or Picasso
+                // Optionally load the image using Glide or Picasso
                 // Glide.with(this).load(url).into(binding.imgAvatar);
             }
         });
 
+        // Observe registration success to navigate to login page
         viewModel.getRegisterSuccess().observe(this, success -> {
             if (success != null && success) {
                 Toast.makeText(this, "Đăng ký thành công! Quay về trang đăng nhập...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
-                finish(); // đóng RegisterActivity để không quay lại
+                finish(); // Close RegisterActivity to prevent going back
+            }
+        });
+
+        // Set up Spinner for classLevel selection
+        Spinner classLevelSpinner = binding.spinnerClass;
+        classLevelSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, android.view.View selectedItemView, int position, long id) {
+                String selectedClassLevel = parentView.getItemAtPosition(position).toString();
+                viewModel.classLevel.setValue(selectedClassLevel);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // Handle if nothing is selected
             }
         });
     }
 
+    // Method to open image picker
     private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(intent, REQUEST_IMAGE_PICK);
     }
 
+    // Handle result of image picker
     @Override
     @SuppressWarnings("deprecation")
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -88,6 +113,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    // Method to upload image to Cloudinary
     private void uploadImageToCloudinary(Uri imageUri) {
         MediaManager.get().upload(imageUri)
                 .option("resource_type", "image")

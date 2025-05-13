@@ -21,6 +21,7 @@ public class User {
     String name;
     String email;
     String avatar;
+    Long classLevel;
 
     @ElementCollection
     Set<String> roles;

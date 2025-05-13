@@ -133,7 +133,9 @@
                         android:textStyle="bold"
                         android:textColor="@color/black"
                         android:textAllCaps="false"
-                        android:background="@color/white"/>
+                        android:background="@color/white"
+                        android:onClick="@{() -> profileFragment.onChangePasswordClicked()}" />
+
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

@@ -24,5 +24,6 @@ public class UserCreationRequest {
     private String email;
 
     private String avatar;
+    private Long classLevel;
 
 }

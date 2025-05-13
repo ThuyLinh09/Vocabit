@@ -9,7 +9,6 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MediatorLiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.example.vocabit.MVVMApplication;
 import com.example.vocabit.R;
@@ -35,12 +34,14 @@ public class RegisterViewModel extends BaseViewModel {
     public final MutableLiveData<String> name = new MutableLiveData<>("");
     public final MutableLiveData<String> email = new MutableLiveData<>("");
     public final MutableLiveData<String> avatarUrl = new MutableLiveData<>("");
+    public final MutableLiveData<String> classLevel = new MutableLiveData<>(""); // Thêm trường classLevel
 
     public final ObservableField<Boolean> isFormValid = new ObservableField<>(false);
     public final MutableLiveData<Boolean> registerSuccess = new MutableLiveData<>();
     public LiveData<Boolean> getRegisterSuccess() {
         return registerSuccess;
     }
+
     public final MutableLiveData<Void> chooseAvatarEvent = new MutableLiveData<>();
 
     public RegisterViewModel(Repository repository, MVVMApplication application) {
@@ -55,17 +56,18 @@ public class RegisterViewModel extends BaseViewModel {
         formValidLiveData.addSource(name, formObserver);
         formValidLiveData.addSource(email, formObserver);
         formValidLiveData.addSource(avatarUrl, formObserver);
+        formValidLiveData.addSource(classLevel, formObserver); // Thêm classLevel vào formValidLiveData
 
         formValidLiveData.observeForever(isFormValid::set);
     }
-
 
     private boolean validateForm() {
         return !TextUtils.isEmpty(username.getValue()) &&
                 !TextUtils.isEmpty(password.getValue()) &&
                 !TextUtils.isEmpty(name.getValue()) &&
                 !TextUtils.isEmpty(email.getValue()) &&
-                !TextUtils.isEmpty(avatarUrl.getValue());
+                !TextUtils.isEmpty(avatarUrl.getValue())&&
+                !TextUtils.isEmpty(classLevel.getValue());
     }
 
     public void onRegisterClicked() {
@@ -79,7 +81,8 @@ public class RegisterViewModel extends BaseViewModel {
                 password.getValue(),
                 name.getValue(),
                 email.getValue(),
-                avatarUrl.getValue()
+                avatarUrl.getValue(),
+                Long.parseLong(classLevel.getValue()) // Chuyển classLevel thành Long
         );
 
         doRegister(request);
@@ -110,8 +113,13 @@ public class RegisterViewModel extends BaseViewModel {
     }
 
     private void handleRegisterError(Throwable throwable) {
-        if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
-            Toast.makeText(context, context.getString(R.string.incorrect_info), Toast.LENGTH_SHORT).show();
+        if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            if (httpException.code() == 400) {
+                Toast.makeText(context, context.getString(R.string.incorrect_info), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, context.getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
+            }
         } else {
             Toast.makeText(context, context.getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
         }

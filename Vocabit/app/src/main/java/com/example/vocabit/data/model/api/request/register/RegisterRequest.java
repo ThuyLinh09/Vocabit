@@ -16,4 +16,5 @@ public class RegisterRequest {
     private String email;
 
     private String avatar;
+    private Long classLevel;
 }

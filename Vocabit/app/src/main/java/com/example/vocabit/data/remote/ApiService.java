@@ -1,5 +1,6 @@
 package com.example.vocabit.data.remote;
 
+import com.example.vocabit.data.model.api.request.changepassword.ChangePasswordRequest;
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
 import com.example.vocabit.data.model.api.request.login.ReLoginRequest;
 import com.example.vocabit.data.model.api.request.register.RegisterRequest;
@@ -8,6 +9,7 @@ import com.example.vocabit.data.model.api.response.login.LoginResponse;
 import com.example.vocabit.data.model.api.response.login.ReLoginResponse;
 import com.example.vocabit.data.model.api.response.register.RegisterResponse;
 
+import io.reactivex.rxjava3.core.Completable;
 import io.reactivex.rxjava3.core.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -33,5 +35,8 @@ public interface ApiService {
 
     @POST("users")
     Observable<RegisterResponse> register(@Body RegisterRequest request);
+
+    @POST("users/{id}")
+    Completable changePassword(@Body ChangePasswordRequest request);
 
 }
