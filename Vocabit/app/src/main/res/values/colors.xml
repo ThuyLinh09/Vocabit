@@ -10,7 +10,8 @@
     <color name="menu_green">#10B981</color>
     <color name="toolbar_green">#033C29</color>
     <color name="btn_orange">#F6E25D35</color>
-
+    <color name="selectedColor">#FF0000</color>
+    <color name="defaultColor">#FFFFFF</color>
 
 
 </resources>
