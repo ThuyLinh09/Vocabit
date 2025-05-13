@@ -16,8 +16,13 @@ public class WordService {
     public Word createWord(WordRequest wordRequest) {
         Word word = new Word();
         word.setWord(wordRequest.getWord());
+        word.setExample(wordRequest.getExample());
         word.setMeaning(wordRequest.getMeaning());
+        word.setAudioUrl(wordRequest.getAudioUrl());
+        word.setPronunciation(wordRequest.getPronunciation());
+        word.setDifficultyLevel(wordRequest.getDifficultyLevel());
         word.setImageUrl(wordRequest.getImageUrl());
+        word.setPartOfSpeech(wordRequest.getPartOfSpeech());
         return wordRepository.save(word);
     }
     public List<Word> findAll() {
