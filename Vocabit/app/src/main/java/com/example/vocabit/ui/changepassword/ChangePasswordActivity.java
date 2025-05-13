@@ -1,5 +1,6 @@
 package com.example.vocabit.ui.changepassword;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +35,7 @@ public class ChangePasswordActivity extends AppCompatActivity {
         etNewPassword = findViewById(R.id.etNewPassword);
         btnChangePassword = findViewById(R.id.btnChangePassword);
 
-        prefs = new SharedPreferencesManager(this);
+        prefs = SharedPreferencesManager.getInstance(this);
         apiService = ((com.example.vocabit.MVVMApplication) getApplication()).getRepository().getApiService();
 
         btnChangePassword.setOnClickListener(view -> changePassword());
@@ -56,14 +57,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
         }
 
         ChangePasswordRequest request = new ChangePasswordRequest(username, newPassword);
-        compositeDisposable.add(apiService.changePassword(request)
+        compositeDisposable.add(apiService.changePassword(username, request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {
-                    Toast.makeText(this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(ChangePasswordActivity.this, "Đổi mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                    if (ChangePasswordActivity.this instanceof Activity) ((Activity) ChangePasswordActivity.this).finish();
                 }, throwable -> {
-                    Toast.makeText(this, "Lỗi khi đổi mật khẩu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ChangePasswordActivity.this, "Lỗi khi đổi mật khẩu", Toast.LENGTH_SHORT).show();
                 }));
     }
 

@@ -2,6 +2,7 @@ package com.example.vocabit.ui.changepassword;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.databinding.Observable;
@@ -31,7 +32,7 @@ public class ChangePasswordViewModel extends ViewModel {
 
     public ChangePasswordViewModel(Context context) {
         this.context = context;
-        prefs = new SharedPreferencesManager(context);
+        this.prefs = SharedPreferencesManager.getInstance(context);
         apiService = ((MVVMApplication) context.getApplicationContext()).getRepository().getApiService();
 
         Observer observer = new Observer();
@@ -57,9 +58,9 @@ public class ChangePasswordViewModel extends ViewModel {
 
         String username = JwtUtils.getUsernameFromToken(token);
         String password = newPassword.get();
-
+        Log.d("pass", password);
         ChangePasswordRequest request = new ChangePasswordRequest(username, password);
-        compositeDisposable.add(apiService.changePassword(request)
+        compositeDisposable.add(apiService.changePassword(username, request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(() -> {

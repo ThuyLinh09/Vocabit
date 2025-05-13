@@ -1,4 +1,4 @@
-package com.example.VicabitBE.dto.response;
+package com.example.vocabit.data.model.api.response.info;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

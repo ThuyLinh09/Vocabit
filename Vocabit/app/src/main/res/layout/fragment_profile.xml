@@ -48,9 +48,12 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
+                    android:id="@+id/imgAvatar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    app:imageUrl="@{profileViewModel.avatarUrl}"
+                    android:src="@drawable/ic_profile" />
             </com.google.android.material.card.MaterialCardView>
 
             <TextView
@@ -109,7 +112,8 @@
                         android:text="Thông tin cá nhân"
                         android:textAllCaps="false"
                         android:textColor="@color/black"
-                        android:textStyle="bold" />
+                        android:textStyle="bold"
+                        android:onClick="@{() -> profileFragment.onViewProfileClicked()}" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView
