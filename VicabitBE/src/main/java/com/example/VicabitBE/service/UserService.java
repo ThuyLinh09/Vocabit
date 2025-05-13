@@ -59,8 +59,8 @@ public class UserService {
         log.info("Finding user by id {}", id);
         return userMapper.toUserResponse(userRepository.findById(id).orElseThrow(()-> new RuntimeException("User not found")));
     }
-    public UserResponse updateUser(Long id, UserUpdateRequest userUpdateRequest) {
-        User user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("User not found"));
+    public UserResponse updateUser(String username, UserUpdateRequest userUpdateRequest) {
+        User user = userRepository.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
         userMapper.updateUser(user, userUpdateRequest);
         return userMapper.toUserResponse(userRepository.save(user));
     }

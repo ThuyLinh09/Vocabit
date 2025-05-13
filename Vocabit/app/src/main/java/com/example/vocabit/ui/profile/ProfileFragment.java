@@ -15,6 +15,7 @@ import com.example.vocabit.R;
 import com.example.vocabit.databinding.FragmentProfileBinding;
 import com.example.vocabit.di.component.FragmentComponent;
 import com.example.vocabit.ui.base.fragment.BaseFragment;
+import com.example.vocabit.ui.changepassword.ChangePasswordActivity;
 import com.example.vocabit.ui.login.LoginActivity;
 
 
@@ -64,5 +65,11 @@ public class ProfileFragment extends BaseFragment<FragmentProfileBinding, Profil
         startActivity(intent);
         getActivity().finish();
     }
+
+    public void onChangePasswordClicked() {
+        Intent intent = new Intent(getContext(), ChangePasswordActivity.class);
+        startActivity(intent);
+    }
+
 
 }

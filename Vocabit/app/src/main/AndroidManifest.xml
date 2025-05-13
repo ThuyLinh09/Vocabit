@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".MVVMApplication"
@@ -23,6 +25,15 @@
             android:name=".ui.matchQuestion.MatchQuestionActivity"
             android:exported="false" />
         <activity
+            android:name=".ui.userinfo.UserInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.changepassword.ChangePasswordActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.forgetpassword.ForgotPasswordActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.extraLetter.ExtraLetterQuestionActivity"
             android:exported="false" />
         <activity
@@ -31,6 +42,7 @@
         <activity
             android:name=".ui.imageQuestion.ImageQuestionActivity"
             android:exported="false" />
+
         <activity
             android:name=".ui.login.LoginActivity"
             android:exported="true">

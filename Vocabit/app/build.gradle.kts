@@ -16,6 +16,8 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField("String", "BASE_URL", "\"http://192.168.1.7:8080/learning-english/\"")
 
+
+        buildConfigField("String", "BASE_URL", "\"http://192.168.97.179:8080/learning-english/\"")
     }
 
     buildTypes {
@@ -94,4 +96,9 @@ dependencies {
     // Glide
     implementation (libs.glide)
     annotationProcessor (libs.compiler)
+
+    implementation(libs.cloudinary.android)
+    implementation ("com.auth0.android:jwtdecode:2.0.1")
+
+
 }
