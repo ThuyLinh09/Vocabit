@@ -6,9 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
     <application
         android:name=".MVVMApplication"
         android:allowBackup="true"
@@ -22,11 +19,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Vocabit"
         tools:targetApi="31">
-
-        <activity
-            android:name=".ui.register.RegisterActivity"
-            android:exported="false" />
-
         <activity
             android:name=".ui.matchQuestion.MatchQuestionActivity"
             android:exported="false" />
@@ -44,12 +36,11 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".ui.main.MainActivity" />
-
     </application>
 
 </manifest>

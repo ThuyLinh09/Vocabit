@@ -1,7 +1,6 @@
 package com.example.vocabit.data.remote;
 
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
-
 import com.example.vocabit.data.model.api.response.extraLetter.ExtraLetterQuestionResponse;
 import com.example.vocabit.data.model.api.response.fillQuestion.FillQuestionResponse;
 import com.example.vocabit.data.model.api.response.imageQuestion.ImageQuestionResponse;
@@ -11,7 +10,6 @@ import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.login.LoginResponse;
 
 import java.util.List;
-
 
 import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
@@ -23,8 +21,7 @@ import retrofit2.http.Query;
 public interface ApiService {
     //Login
     @POST("auth/log-in")
-    Observable<LoginResponse> login(@Body LoginRequest request);
-
+    Observable<ResponseWrapper<LoginResponse>> login(@Body LoginRequest request);
 
     @GET("practices")
     Observable<ResponseWrapper<List<PracticeResponse>>> getPractices();
@@ -46,5 +43,4 @@ public interface ApiService {
     Observable<ResponseWrapper<List<MatchQuestionResponse>>> getMatchQuestions(
             @Query("unit") int unit
     );
-
 }

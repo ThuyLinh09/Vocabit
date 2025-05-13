@@ -12,5 +12,4 @@ public class UserUpdateRequest {
     String password;
     String name;
     String email;
-    String avatar;
 }

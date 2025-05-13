@@ -84,7 +84,7 @@ public class LoginViewModel extends BaseViewModel {
                 .subscribe(
                         response -> {
                             hideLoading();
-                            repository.getSharedPreferences().setToken(response.getToken());
+                            repository.getSharedPreferences().setToken(response.getResult().getToken());
                             Toast.makeText(context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                             loginSuccess.setValue(true);
                         }, throwable -> {
