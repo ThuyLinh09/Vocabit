@@ -108,7 +108,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2"
             app:layout_constraintVertical_bias="0.0" />
-
+        <TextView
+            android:id="@+id/textRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có tài khoản? Đăng ký ngay"
+            android:textColor="@color/icon_blue"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"
+            android:layout_centerHorizontal="true"
+            android:onClick="navigateToRegister"
+            app:layout_constraintTop_toBottomOf="@+id/btn_login"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

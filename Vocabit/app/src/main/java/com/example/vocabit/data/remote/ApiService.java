@@ -2,6 +2,7 @@ package com.example.vocabit.data.remote;
 
 import com.example.vocabit.data.model.api.request.changepassword.ChangePasswordRequest;
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
+import com.example.vocabit.data.model.api.request.register.RegisterRequest;
 import com.example.vocabit.data.model.api.response.extraLetter.ExtraLetterQuestionResponse;
 import com.example.vocabit.data.model.api.response.fillQuestion.FillQuestionResponse;
 import com.example.vocabit.data.model.api.response.imageQuestion.ImageQuestionResponse;
@@ -9,6 +10,7 @@ import com.example.vocabit.data.model.api.response.matchQuestion.MatchQuestionRe
 import com.example.vocabit.data.model.api.response.practice.PracticeResponse;
 import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.login.LoginResponse;
+import com.example.vocabit.data.model.api.response.register.RegisterResponse;
 
 import java.util.List;
 

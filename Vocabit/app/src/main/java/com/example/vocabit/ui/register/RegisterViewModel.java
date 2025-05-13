@@ -21,7 +21,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-
 import retrofit2.HttpException;
 import timber.log.Timber;
 
@@ -75,3 +74,57 @@ public class RegisterViewModel extends BaseViewModel {
             Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
             return;
         }
+
+        RegisterRequest request = new RegisterRequest(
+                username.getValue(),
+                password.getValue(),
+                name.getValue(),
+                email.getValue(),
+                avatarUrl.getValue(),
+                Long.parseLong(classLevel.getValue()) // Chuyển classLevel thành Long
+        );
+
+        doRegister(request);
+    }
+
+    private void doRegister(RegisterRequest request) {
+        showLoading();
+        compositeDisposable.add(repository.getApiService().register(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .retryWhen(throwable -> throwable.flatMap((Function<Throwable, ObservableSource<?>>) throwable1 -> {
+                    if (NetworkUtils.checkNetworkError(throwable1)) {
+                        hideLoading();
+                        return application.showDialogNoInternetAccess();
+                    } else {
+                        return io.reactivex.rxjava3.core.Observable.error(throwable1);
+                    }
+                }))
+                .subscribe(response -> {
+                    hideLoading();
+                    Toast.makeText(context, context.getString(R.string.register_success), Toast.LENGTH_SHORT).show();
+                    registerSuccess.setValue(true);
+                }, throwable -> {
+                    hideLoading();
+                    Timber.e(throwable);
+                    handleRegisterError(throwable);
+                }));
+    }
+
+    private void handleRegisterError(Throwable throwable) {
+        if (throwable instanceof HttpException) {
+            HttpException httpException = (HttpException) throwable;
+            if (httpException.code() == 400) {
+                Toast.makeText(context, context.getString(R.string.incorrect_info), Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, context.getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(context, context.getString(R.string.register_fail), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void onChooseAvatarClicked() {
+        chooseAvatarEvent.setValue(null);
+    }
+}
