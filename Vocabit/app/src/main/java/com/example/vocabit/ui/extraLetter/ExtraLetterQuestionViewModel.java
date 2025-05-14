@@ -10,6 +10,7 @@ import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.extraLetter.ExtraLetterQuestionResponse;
 import com.example.vocabit.data.model.api.response.extraLetter.LetterWrapper;
 import com.example.vocabit.ui.base.activity.BaseViewModel;
+import com.example.vocabit.ui.base.fragment.BaseFragmentViewModel;
 import com.example.vocabit.utils.NetworkUtils;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class ExtraLetterQuestionViewModel extends BaseViewModel {
+public class ExtraLetterQuestionViewModel extends BaseFragmentViewModel {
     private final Repository repository;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -34,6 +35,10 @@ public class ExtraLetterQuestionViewModel extends BaseViewModel {
 
     public final ObservableField<List<LetterWrapper>> letterList = new ObservableField<>();
     private int selectedIndex = -1;
+    private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
+    public LiveData<Integer> getScore() {
+        return score;
+    }
 
     @Inject
     public ExtraLetterQuestionViewModel(Repository repository, MVVMApplication application) {
@@ -84,6 +89,13 @@ public class ExtraLetterQuestionViewModel extends BaseViewModel {
                         )
         );
     }
+    private void onAnswerChecked(boolean isCorrect) {
+        answerResult.setValue(isCorrect);
+        if (isCorrect) {
+            Integer current = score.getValue();
+            score.setValue((current != null ? current : 0) + 10);
+        }
+    }
 
     private void updateCurrentQuestion() {
         ExtraLetterQuestionResponse q = questionList.get(currentIndex);
@@ -128,11 +140,9 @@ public class ExtraLetterQuestionViewModel extends BaseViewModel {
         }
 
         ExtraLetterQuestionResponse q = currentQuestion.getValue();
-        if (q != null && sb.toString().equals(q.getCorrectWord())) {
-            answerResult.setValue(true);
-        } else {
-            answerResult.setValue(false);
-        }
+        boolean isCorrect = q != null && sb.toString().equals(q.getCorrectWord());
+        onAnswerChecked(isCorrect);
+
     }
 
     public void loadNext() {

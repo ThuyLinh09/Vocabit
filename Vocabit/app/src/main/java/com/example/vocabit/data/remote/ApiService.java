@@ -4,6 +4,7 @@ import com.example.vocabit.data.model.api.request.changepassword.ChangePasswordR
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
 
 import com.example.vocabit.data.model.api.request.register.RegisterRequest;
+import com.example.vocabit.data.model.api.response.exam.ExamResponse;
 import com.example.vocabit.data.model.api.response.extraLetter.ExtraLetterQuestionResponse;
 import com.example.vocabit.data.model.api.response.fillQuestion.FillQuestionResponse;
 import com.example.vocabit.data.model.api.response.imageQuestion.ImageQuestionResponse;
@@ -24,13 +25,15 @@ import io.reactivex.rxjava3.core.Observable;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 
 public interface ApiService {
     //Login
     @POST("auth/log-in")
-    Observable<ApiResponse<LoginResponse>> login(@Body LoginRequest request);
+    Observable<ResponseWrapper<LoginResponse>> login(@Body LoginRequest request);
 
     @GET("practices")
     Observable<ResponseWrapper<List<PracticeResponse>>> getPractices();
@@ -60,5 +63,8 @@ public interface ApiService {
 
     @GET("users/{username}")
     Observable<UserResponse> getInfoUser(@Path("username") String username);
+
+    @GET("exams")
+    Observable<ResponseWrapper<List<ExamResponse>>> getExams();
 
 }

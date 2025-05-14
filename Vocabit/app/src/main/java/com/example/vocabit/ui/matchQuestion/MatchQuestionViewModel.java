@@ -21,6 +21,8 @@ import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.imageQuestion.ImageQuestionResponse;
 import com.example.vocabit.data.model.api.response.matchQuestion.MatchQuestionResponse;
 import com.example.vocabit.ui.base.activity.BaseViewModel;
+import com.example.vocabit.ui.base.fragment.BaseFragment;
+import com.example.vocabit.ui.base.fragment.BaseFragmentViewModel;
 import com.example.vocabit.utils.NetworkUtils;
 
 import java.util.ArrayList;
@@ -36,7 +38,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class MatchQuestionViewModel extends BaseViewModel {
+public class MatchQuestionViewModel extends BaseFragmentViewModel {
     private final CompositeDisposable disposables = new CompositeDisposable();
     private final MutableLiveData<MatchQuestionResponse> currentQuestion = new MutableLiveData<>();
     private final MutableLiveData<List<String>> englishList = new MutableLiveData<>();
@@ -54,6 +56,10 @@ public class MatchQuestionViewModel extends BaseViewModel {
         return feedbackVietnamese;
     }
     private List<MatchQuestionResponse> questionList;
+    public LiveData<MatchQuestionResponse> getCurrentQuestion() {
+        return currentQuestion;
+    }
+
     private int currentIndex = 0;
     private String selectedEnglish = null;
     private String selectedVietnamese = null;
@@ -82,10 +88,16 @@ public class MatchQuestionViewModel extends BaseViewModel {
     public LiveData<Boolean> getAllCorrect() {
         return allCorrect;
     }
+    private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
+
+    public LiveData<Integer> getScore() {
+        return score;
+    }
 
     public void start(int unit) {
         fetchQuestions(unit);
     }
+
 
     private void fetchQuestions(int unit) {
         showLoading();
@@ -156,7 +168,7 @@ public class MatchQuestionViewModel extends BaseViewModel {
                 matchedVietnamese.getValue().add(selectedVietnamese);
                 matchedEnglish.postValue(matchedEnglish.getValue());
                 matchedVietnamese.postValue(matchedVietnamese.getValue());
-
+                score.setValue(score.getValue() + 10);
                 if (matchedEnglish.getValue().size() == englishList.getValue().size()) {
                     allCorrect.postValue(true);
                 }
@@ -175,8 +187,13 @@ public class MatchQuestionViewModel extends BaseViewModel {
 
     public void loadNext() {
         currentIndex++;
-        loadQuestion();
+        if (currentIndex >= questionList.size()) {
+            currentQuestion.setValue(null); // Đã hết câu hỏi
+        } else {
+            loadQuestion(); // Load câu hỏi tiếp theo
+        }
     }
+
 
     @Override
     protected void onCleared() {

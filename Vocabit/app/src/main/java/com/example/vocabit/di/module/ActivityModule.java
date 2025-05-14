@@ -10,13 +10,9 @@ import com.example.vocabit.ViewModelProviderFactory;
 import com.example.vocabit.data.Repository;
 import com.example.vocabit.di.scope.ActivityScope;
 import com.example.vocabit.ui.base.activity.BaseActivity;
-import com.example.vocabit.ui.extraLetter.ExtraLetterQuestionActivity;
-import com.example.vocabit.ui.extraLetter.ExtraLetterQuestionViewModel;
-import com.example.vocabit.ui.fillQuestion.FillQuestionViewModel;
-import com.example.vocabit.ui.imageQuestion.ImageQuestionViewModel;
+import com.example.vocabit.ui.exam.ExamDetailViewModel;
 import com.example.vocabit.ui.login.LoginViewModel;
 import com.example.vocabit.ui.main.MainViewModel;
-import com.example.vocabit.ui.matchQuestion.MatchQuestionViewModel;
 import com.example.vocabit.utils.GetInfo;
 
 import javax.inject.Named;
@@ -66,34 +62,10 @@ public class ActivityModule {
 
     @Provides
     @ActivityScope
-    ImageQuestionViewModel provideImageQuestionViewModel(Repository repository, Context application) {
-        Supplier<ImageQuestionViewModel> supplier = () -> new ImageQuestionViewModel(repository, (MVVMApplication)application);
-        ViewModelProviderFactory<ImageQuestionViewModel> factory = new ViewModelProviderFactory<>(ImageQuestionViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(ImageQuestionViewModel.class);
-    }
-
-    @Provides
-    @ActivityScope
-    FillQuestionViewModel provideFillQuestionViewModel(Repository repository, Context application) {
-        Supplier<FillQuestionViewModel> supplier = () -> new FillQuestionViewModel(repository, (MVVMApplication)application);
-        ViewModelProviderFactory<FillQuestionViewModel> factory = new ViewModelProviderFactory<>(FillQuestionViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(FillQuestionViewModel.class);
-    }
-
-    @Provides
-    @ActivityScope
-    ExtraLetterQuestionViewModel provideExtraLetterQuestionViewModel(Repository repository, Context application) {
-        Supplier<ExtraLetterQuestionViewModel> supplier = () -> new ExtraLetterQuestionViewModel(repository, (MVVMApplication)application);
-        ViewModelProviderFactory<ExtraLetterQuestionViewModel> factory = new ViewModelProviderFactory<>(ExtraLetterQuestionViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(ExtraLetterQuestionViewModel.class);
-    }
-
-    @Provides
-    @ActivityScope
-    MatchQuestionViewModel provideMatchQuestionViewModel(Repository repository, Context application) {
-        Supplier<MatchQuestionViewModel> supplier = () -> new MatchQuestionViewModel(repository, (MVVMApplication)application);
-        ViewModelProviderFactory<MatchQuestionViewModel> factory = new ViewModelProviderFactory<>(MatchQuestionViewModel.class, supplier);
-        return new ViewModelProvider(activity, factory).get(MatchQuestionViewModel.class);
+    ExamDetailViewModel provideExamAViewModel(Repository repository, Context application) {
+        Supplier<ExamDetailViewModel> supplier = () -> new ExamDetailViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<ExamDetailViewModel> factory = new ViewModelProviderFactory<>(ExamDetailViewModel.class, supplier);
+        return new ViewModelProvider(activity, factory).get(ExamDetailViewModel.class);
     }
 
 }

@@ -18,6 +18,7 @@ import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.fillQuestion.FillQuestionResponse;
 import com.example.vocabit.data.model.api.response.imageQuestion.ImageQuestionResponse;
 import com.example.vocabit.ui.base.activity.BaseViewModel;
+import com.example.vocabit.ui.base.fragment.BaseFragmentViewModel;
 import com.example.vocabit.utils.NetworkUtils;
 
 import java.util.List;
@@ -29,7 +30,7 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import timber.log.Timber;
 
-public class FillQuestionViewModel extends BaseViewModel {
+public class FillQuestionViewModel extends BaseFragmentViewModel {
     private final Repository repository;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
@@ -45,7 +46,11 @@ public class FillQuestionViewModel extends BaseViewModel {
     public final ObservableField<String> option2 = new ObservableField<>();
     public final ObservableField<String> option3 = new ObservableField<>();
     public final ObservableField<String> option4 = new ObservableField<>();
+    private final MutableLiveData<Integer> score = new MutableLiveData<>(0);
 
+    public LiveData<Integer> getScore() {
+        return score;
+    }
     @Inject
     public FillQuestionViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -125,7 +130,14 @@ public class FillQuestionViewModel extends BaseViewModel {
         FillQuestionResponse q = currentQuestion.getValue();
         if (q == null) return;
         boolean correct = q.getCorrectOption().equals(q.getOptions().get(index));
-        answerResult.setValue(correct);
+        onAnswerChecked(correct);
+    }
+    private void onAnswerChecked(boolean isCorrect) {
+        answerResult.setValue(isCorrect);
+        if (isCorrect) {
+            Integer current = score.getValue();
+            score.setValue((current != null ? current : 0) + 10);
+        }
     }
 
     public void loadNext() {

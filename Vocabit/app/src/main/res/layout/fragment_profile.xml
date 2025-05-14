@@ -52,7 +52,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    app:imageUrl="@{profileViewModel.avatarUrl}"
                     android:src="@drawable/ic_profile" />
             </com.google.android.material.card.MaterialCardView>
 
@@ -113,7 +112,7 @@
                         android:textAllCaps="false"
                         android:textColor="@color/black"
                         android:textStyle="bold"
-                        android:onClick="@{() -> profileFragment.onViewProfileClicked()}" />
+                        android:onClick="@{() -> profileFragment.onViewProfile()}" />
                 </androidx.cardview.widget.CardView>
 
                 <androidx.cardview.widget.CardView

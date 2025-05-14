@@ -5,30 +5,14 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.databinding.Observable;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import com.example.vocabit.BR;
-
 import com.example.vocabit.R;
-import com.example.vocabit.databinding.ActivityExtraLetterQuestionBinding;
-import com.example.vocabit.di.component.ActivityComponent;
-import com.example.vocabit.ui.base.activity.BaseActivity;
-
-import java.util.ArrayList;
-
-public class ExtraLetterQuestionActivity extends BaseActivity<ActivityExtraLetterQuestionBinding, ExtraLetterQuestionViewModel> {
+public class ExtraLetterQuestionActivity extends AppCompatActivity {
     public static final String EXTRA_UNIT = "extra_unit";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-
-        viewBinding.setViewModel(viewModel);
-        viewBinding.setLifecycleOwner(this);
+        setContentView(R.layout.activity_match_question); // vẫn giữ layout activity
 
         int unit = getIntent().getIntExtra(EXTRA_UNIT, -1);
         if (unit < 0) {
@@ -37,38 +21,12 @@ public class ExtraLetterQuestionActivity extends BaseActivity<ActivityExtraLette
             return;
         }
 
-        viewModel.start(unit);
-
-        viewModel.getAnswerResult().observe(this, correct -> {
-            if (correct == null) return;
-            Toast.makeText(this, correct ? "Đúng rồi!" : "Sai rồi!", Toast.LENGTH_SHORT).show();
-            viewBinding.getRoot().postDelayed(() -> viewModel.loadNext(), 800);
-        });
-        LetterAdapter adapter = new LetterAdapter(new ArrayList<>(), index -> viewModel.onLetterClicked(index));
-        viewBinding.recyclerLetters.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
-        viewBinding.recyclerLetters.setAdapter(adapter);
-
-        viewModel.letterList.addOnPropertyChangedCallback(new Observable.OnPropertyChangedCallback() {
-            @Override
-            public void onPropertyChanged(Observable sender, int propertyId) {
-                adapter.setLetters(viewModel.letterList.get());
-            }
-        });
-
-    }
-
-    @Override
-    public int getLayoutId() {
-        return R.layout.activity_extra_letter_question;
-    }
-
-    @Override
-    public int getBindingVariable() {
-        return BR.viewModel;
-    }
-
-    @Override
-    public void performDependencyInjection(ActivityComponent buildComponent) {
-        buildComponent.inject(this);
+        if (savedInstanceState == null) {
+            boolean isExamMode = getIntent().getBooleanExtra("IS_EXAM_MODE", false);
+            ExtraLetterQuestionFragment fragment = ExtraLetterQuestionFragment.newInstance(unit, isExamMode);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+        }
     }
 }

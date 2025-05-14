@@ -17,9 +17,7 @@ import com.example.vocabit.data.model.api.request.login.LoginRequest;
 import com.example.vocabit.data.model.api.request.login.ReLoginRequest;
 import com.example.vocabit.ui.base.activity.BaseViewModel;
 import com.example.vocabit.utils.NetworkUtils;
-import com.example.vocabit.utils.SharedPreferencesManager;
 
-import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.ObservableSource;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
@@ -69,36 +67,33 @@ public class LoginViewModel extends BaseViewModel {
 
     }
     private void doLogin(String password, String phoneNumber) {
-        SharedPreferencesManager sharedPrefs = SharedPreferencesManager.getInstance(context);
         LoginRequest request = new LoginRequest(phoneNumber, password);
-
         compositeDisposable.add(repository.getApiService().login(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .retryWhen(throwable -> throwable.flatMap((Function<Throwable, ObservableSource<?>>) throwable1 -> {
-                    if (NetworkUtils.checkNetworkError(throwable1)) {
-                        hideLoading();
-                        return application.showDialogNoInternetAccess();
-                    } else {
-                        return Observable.error(throwable1);
-                    }
-                }))
+                .retryWhen(throwable ->
+                        throwable.flatMap((Function<Throwable, ObservableSource<?>>) throwable1 -> {
+                            if (NetworkUtils.checkNetworkError(throwable1)) {
+                                hideLoading();
+                                return application.showDialogNoInternetAccess();
+                            } else {
+                                return io.reactivex.rxjava3.core.Observable.error(throwable1);
+                            }
+                        })
+                )
                 .subscribe(
-                        apiResponse -> {
+                        response -> {
                             hideLoading();
-                            String token = apiResponse.getResult().getToken();
-                            sharedPrefs.setToken(token);
+                            repository.getSharedPreferences().setToken(response.getResult().getToken());
                             Toast.makeText(context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                             loginSuccess.setValue(true);
-                        },
-                        throwable -> {
+                        }, throwable -> {
                             hideLoading();
                             Timber.e(throwable);
                             handleLoginError(throwable);
                         }));
+
     }
-
-
     private void handleLoginError(Throwable throwable) {
         if (throwable instanceof HttpException && ((HttpException) throwable).code() == 400) {
             Toast.makeText(context, context.getString(R.string.incorrect_info), Toast.LENGTH_SHORT).show();
