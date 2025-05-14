@@ -23,7 +23,8 @@ public class MatchQuestionActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            MatchQuestionFragment fragment = MatchQuestionFragment.newInstance(unit);
+            boolean isExamMode = getIntent().getBooleanExtra("IS_EXAM_MODE", false);
+            MatchQuestionFragment fragment = MatchQuestionFragment.newInstance(unit, isExamMode);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();

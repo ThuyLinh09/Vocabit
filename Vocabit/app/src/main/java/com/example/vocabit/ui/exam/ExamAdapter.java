@@ -49,7 +49,7 @@ public class ExamAdapter extends RecyclerView.Adapter<ExamAdapter.ExamViewHolder
                 .override(200, 200)
                 .centerCrop()
                 .into(holder.binding.imgIcon);
-
+        holder.binding.text.setText("Vòng thi " + (position + 1));
         holder.binding.getRoot().setOnClickListener(v -> {
             // TODO: Handle starting activity with exam data
             Toast.makeText(context, "Loading exam for Unit " + exam.getUnit(), Toast.LENGTH_SHORT).show();

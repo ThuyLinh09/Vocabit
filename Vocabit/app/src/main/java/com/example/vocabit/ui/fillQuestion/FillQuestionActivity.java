@@ -26,7 +26,8 @@ public class FillQuestionActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            FillQuestionFragment fragment = FillQuestionFragment.newInstance(unit);
+            boolean isExamMode = getIntent().getBooleanExtra("IS_EXAM_MODE", false);
+            FillQuestionFragment fragment = FillQuestionFragment.newInstance(unit, isExamMode);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();

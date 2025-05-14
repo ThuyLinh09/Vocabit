@@ -32,7 +32,9 @@ public class ImageQuestionActivity extends AppCompatActivity {
         }
 
         if (savedInstanceState == null) {
-            ImageQuestionFragment fragment = ImageQuestionFragment.newInstance(unit);
+            boolean isExamMode = getIntent().getBooleanExtra("IS_EXAM_MODE", false);
+
+            ImageQuestionFragment fragment = ImageQuestionFragment.newInstance(unit, isExamMode);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();

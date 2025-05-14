@@ -16,7 +16,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
+        android:background="@color/bg_green"
         android:padding="16dp">
 
         <LinearLayout
@@ -28,14 +28,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Điểm: 0"
-                android:textSize="18sp"
+                android:textSize="28sp"
+                android:layout_gravity="center"
                 android:textStyle="bold"
-                android:textColor="@android:color/black"
+                android:textColor="@color/score"
                 android:layout_margin="8dp" />
             <ImageView
                 android:id="@+id/ivQuestion"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
+                android:paddingTop="15dp"
                 android:scaleType="centerCrop"
                 app:imageBitmap="@{imageQuestionViewModel.imageBitmap}"
                 android:contentDescription="Hình câu hỏi" />
@@ -44,29 +46,37 @@
                 android:id="@+id/btnOption1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:backgroundTint="@color/white"
                 android:text="@{imageQuestionViewModel.option1}"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="36dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:backgroundTint="@color/white"
                 android:text="@{imageQuestionViewModel.option2}"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="16dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:backgroundTint="@color/white"
                 android:text="@{imageQuestionViewModel.option3}"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="16dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnOption4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="18sp"
+                android:backgroundTint="@color/white"
                 android:text="@{imageQuestionViewModel.option4}"
-                android:layout_marginTop="8dp" />
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </ScrollView>

@@ -38,6 +38,7 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/**")
                         .permitAll()
+                        .requestMatchers(HttpMethod.GET, "/practices/**").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oath2 ->
                 oath2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())

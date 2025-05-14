@@ -7,13 +7,15 @@
         android:layout_height="match_parent"
         android:gravity="center"
         android:orientation="vertical"
+        android:background="@color/bg_green"
         android:padding="24dp">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Kết quả của bạn"
-            android:textSize="20sp"
+            android:text="Your score"
+            android:textColor="@color/score"
+            android:textSize="30sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp" />
 
@@ -21,14 +23,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text='@{String.valueOf(viewModel.score)}'
-            android:textSize="36sp"
+            android:textSize="66sp"
             android:textColor="@android:color/holo_blue_dark" />
 
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/siba"/>
         <Button
             android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Quay lại"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="60dp" />
     </LinearLayout>
 </layout>

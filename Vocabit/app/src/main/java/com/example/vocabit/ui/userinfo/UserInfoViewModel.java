@@ -8,6 +8,7 @@ import androidx.databinding.ObservableField;
 import androidx.lifecycle.ViewModel;
 
 import com.example.vocabit.MVVMApplication;
+import com.example.vocabit.data.Repository;
 import com.example.vocabit.data.model.api.response.info.UserResponse;
 import com.example.vocabit.data.remote.ApiService;
 import com.example.vocabit.utils.JwtUtils;
@@ -24,21 +25,21 @@ public class UserInfoViewModel extends ViewModel {
     public final ObservableField<String> avatarUrl = new ObservableField<>("");
     public final ObservableField<String> classLevel = new ObservableField<>("");
 
-    private final SharedPreferencesManager prefs;
+    private final Repository repository;
     private final ApiService apiService;
     private final Context context;
     private final CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     public UserInfoViewModel(Context context) {
-        this.context = context;
-        this.prefs = SharedPreferencesManager.getInstance(context);
-        this.apiService = ((MVVMApplication) context.getApplicationContext()).getRepository().getApiService();
+        this.context = context.getApplicationContext();
+        this.repository = ((MVVMApplication) this.context).getRepository();
+        this.apiService = repository.getApiService();
 
         loadUserInfo();
     }
 
     private void loadUserInfo() {
-        String token = prefs.getToken();
+        String token = repository.getSharedPreferences().getToken();
         if (token == null) {
             Toast.makeText(context, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
             return;
@@ -69,3 +70,4 @@ public class UserInfoViewModel extends ViewModel {
         compositeDisposable.clear();
     }
 }
+

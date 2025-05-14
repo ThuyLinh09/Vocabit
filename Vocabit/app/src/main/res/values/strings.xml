@@ -21,8 +21,6 @@
     <string name="register_success">Đăng kí thành công</string>
     <string name="register_fail">Đăng kí thất bại</string>
     <string-array name="class_array">
-        <item>1</item>
-        <item>2</item>
         <item>3</item>
         <item>4</item>
         <item>5</item>

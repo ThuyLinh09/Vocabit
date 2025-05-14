@@ -48,6 +48,11 @@ public class MatchQuestionViewModel extends BaseFragmentViewModel {
     private final MutableLiveData<Boolean> allCorrect = new MutableLiveData<>();
     private final MutableLiveData<Pair<String, Boolean>> feedbackEnglish = new MutableLiveData<>();
     private final MutableLiveData<Pair<String, Boolean>> feedbackVietnamese = new MutableLiveData<>();
+    private final MutableLiveData<Integer> finishExam = new MutableLiveData<>();
+
+    public LiveData<Integer> getFinishExam() {
+        return finishExam;
+    }
 
     public LiveData<Pair<String, Boolean>> getFeedbackEnglish() {
         return feedbackEnglish;
@@ -55,7 +60,7 @@ public class MatchQuestionViewModel extends BaseFragmentViewModel {
     public LiveData<Pair<String, Boolean>> getFeedbackVietnamese() {
         return feedbackVietnamese;
     }
-    private List<MatchQuestionResponse> questionList;
+    private MatchQuestionResponse questionList;
     public LiveData<MatchQuestionResponse> getCurrentQuestion() {
         return currentQuestion;
     }
@@ -124,12 +129,8 @@ public class MatchQuestionViewModel extends BaseFragmentViewModel {
     }
 
     private void loadQuestion() {
-        if (currentIndex >= questionList.size()) {
-            currentQuestion.setValue(null);
-            return;
-        }
 
-        MatchQuestionResponse q = questionList.get(currentIndex);
+        MatchQuestionResponse q = questionList;
         currentQuestion.setValue(q);
         englishList.setValue(new ArrayList<>(q.getChoices_en()));
         vietnameseList.setValue(new ArrayList<>(q.getChoices_vn()));
@@ -172,6 +173,9 @@ public class MatchQuestionViewModel extends BaseFragmentViewModel {
                 if (matchedEnglish.getValue().size() == englishList.getValue().size()) {
                     allCorrect.postValue(true);
                 }
+            }else {
+                if(score.getValue() != 0){
+                score.setValue(score.getValue() - 5);}
             }
 
             // Reset sau 500ms
@@ -180,17 +184,7 @@ public class MatchQuestionViewModel extends BaseFragmentViewModel {
                 feedbackVietnamese.setValue(null);
                 selectedEnglish = null;
                 selectedVietnamese = null;
-            }, 200);
-        }
-    }
-
-
-    public void loadNext() {
-        currentIndex++;
-        if (currentIndex >= questionList.size()) {
-            currentQuestion.setValue(null); // Đã hết câu hỏi
-        } else {
-            loadQuestion(); // Load câu hỏi tiếp theo
+            }, 0);
         }
     }
 

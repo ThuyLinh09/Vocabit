@@ -31,7 +31,6 @@ import java.util.ArrayList;
 
 public class ExtraLetterQuestionFragment extends BaseFragment<FragmentExtraLetterQuestionBinding, ExtraLetterQuestionViewModel> {
 
-    private static boolean isExamMode = false;
 
     public static ExtraLetterQuestionFragment newInstance(int unit, boolean isExamMode) {
         ExtraLetterQuestionFragment fragment = new ExtraLetterQuestionFragment();
@@ -74,7 +73,8 @@ public class ExtraLetterQuestionFragment extends BaseFragment<FragmentExtraLette
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         Bundle args = getArguments();
         int unit = args != null ? args.getInt("unit", -1) : -1;
-        isExamMode = args != null && args.getBoolean("isExamMode", false);
+        boolean isExamMode = getArguments() != null && getArguments().getBoolean("isExamMode", false); // Lấy giá trị từ Bundle
+
         if (unit < 0) {
             Toast.makeText(requireContext(), "Thiếu thông tin unit", Toast.LENGTH_SHORT).show();
             return;
@@ -96,7 +96,9 @@ public class ExtraLetterQuestionFragment extends BaseFragment<FragmentExtraLette
 
                 if (isExamMode) {
                     // ✅ Nếu là thi: quay lại activity để chuyển part
-                    requireActivity().setResult(RESULT_OK);
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("SCORE", score);  // Truyền điểm vào Intent
+                    requireActivity().setResult(RESULT_OK, resultIntent);
                     requireActivity().finish();
                 } else {
                     // ✅ Nếu là luyện tập: hiển thị kết quả như bình thường

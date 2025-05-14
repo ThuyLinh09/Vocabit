@@ -1,5 +1,8 @@
 package com.example.vocabit.ui.fillQuestion;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,10 +29,11 @@ import com.example.vocabit.ui.practice.ResultPracticeFragment;
 public class FillQuestionFragment extends BaseFragment<FragmentFillQuestionBinding, FillQuestionViewModel> {
 
 
-    public static FillQuestionFragment newInstance(int unit) {
+    public static FillQuestionFragment newInstance(int unit, boolean isExamMode) {
         FillQuestionFragment fragment = new FillQuestionFragment();
         Bundle args = new Bundle();
         args.putInt("unit", unit);
+        args.putBoolean("isExamMode", isExamMode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -65,6 +69,8 @@ public class FillQuestionFragment extends BaseFragment<FragmentFillQuestionBindi
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         int unit = getArguments() != null ? getArguments().getInt("unit", -1) : -1;
+        boolean isExamMode = getArguments() != null && getArguments().getBoolean("isExamMode", false); // Lấy giá trị từ Bundle
+
         if (unit < 0) {
             Toast.makeText(requireContext(), "Thiếu thông tin unit", Toast.LENGTH_SHORT).show();
             return;
@@ -76,34 +82,42 @@ public class FillQuestionFragment extends BaseFragment<FragmentFillQuestionBindi
             @Override
             public void onChanged(FillQuestionResponse question) {
                 if (question == null) {
-                    Toast.makeText(requireContext(), "Hoàn thành tất cả câu hỏi", Toast.LENGTH_SHORT).show();
                     int score = viewModel.getScore().getValue() != null ? viewModel.getScore().getValue() : 0;
-                    requireActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, ResultPracticeFragment.newInstance(score))
-                            .addToBackStack(null)
-                            .commit();
-                    return;
-                }
-                binding.btnOption1.setText(question.getOptions().get(0));
-                binding.btnOption2.setText(question.getOptions().get(1));
-                binding.btnOption3.setText(question.getOptions().get(2));
-                binding.btnOption4.setText(question.getOptions().get(3));
 
-                setButtonClickListener(binding.btnOption1, 0);
-                setButtonClickListener(binding.btnOption2, 1);
-                setButtonClickListener(binding.btnOption3, 2);
-                setButtonClickListener(binding.btnOption4, 3);
+                    if (isExamMode) {
+                        // ✅ Nếu là thi: quay lại activity để chuyển part
+                        Intent resultIntent = new Intent();
+                        resultIntent.putExtra("SCORE", score);  // Truyền điểm vào Intent
+                        requireActivity().setResult(RESULT_OK, resultIntent);
+                        requireActivity().finish();
+                    } else {
+                        // ✅ Nếu là luyện tập: hiển thị kết quả như bình thường
+                        Toast.makeText(requireContext(), "Hoàn thành tất cả câu hỏi", Toast.LENGTH_SHORT).show();
+                        requireActivity().getSupportFragmentManager()
+                                .beginTransaction()
+                                .replace(R.id.fragment_container, ResultPracticeFragment.newInstance(score))
+                                .addToBackStack(null)
+                                .commit();
+                    }
+                }
+                if (question != null && question.getOptions() != null && !question.getOptions().isEmpty()) {
+
+                    binding.btnOption1.setText(question.getOptions().get(0));
+                    binding.btnOption2.setText(question.getOptions().get(1));
+                    binding.btnOption3.setText(question.getOptions().get(2));
+                    binding.btnOption4.setText(question.getOptions().get(3));
+
+                    setButtonClickListener(binding.btnOption1, 0);
+                    setButtonClickListener(binding.btnOption2, 1);
+                    setButtonClickListener(binding.btnOption3, 2);
+                    setButtonClickListener(binding.btnOption4, 3);
+                }
             }
         });
         viewModel.getScore().observe(getViewLifecycleOwner(), score -> {
-            binding.tvScore.setText("Điểm: " + score);
+            binding.tvScore.setText("Score: " + score);
         });
-        viewModel.getAnswerResult().observe(getViewLifecycleOwner(), correct -> {
-            if (correct == null) return;
-            String msg = correct ? "Đúng rồi!" : "Sai rồi!";
-            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
-        });
+
     }
     private void setButtonClickListener(android.widget.Button button, int index) {
         button.setOnClickListener(v -> {

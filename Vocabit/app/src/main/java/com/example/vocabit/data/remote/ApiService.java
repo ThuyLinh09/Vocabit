@@ -1,6 +1,7 @@
 package com.example.vocabit.data.remote;
 
 import com.example.vocabit.data.model.api.request.changepassword.ChangePasswordRequest;
+import com.example.vocabit.data.model.api.request.exam.ExamResultRequest;
 import com.example.vocabit.data.model.api.request.login.LoginRequest;
 
 import com.example.vocabit.data.model.api.request.register.RegisterRequest;
@@ -16,6 +17,7 @@ import com.example.vocabit.data.model.api.response.ApiResponse;
 import com.example.vocabit.data.model.api.response.ResponseWrapper;
 import com.example.vocabit.data.model.api.response.info.UserResponse;
 import com.example.vocabit.data.model.api.response.login.LoginResponse;
+import com.example.vocabit.data.model.api.response.rank.RankResponse;
 import com.example.vocabit.data.model.api.response.register.RegisterResponse;
 
 import java.util.List;
@@ -52,7 +54,7 @@ public interface ApiService {
     );
     //
     @GET("questions/match")
-    Observable<ResponseWrapper<List<MatchQuestionResponse>>> getMatchQuestions(
+    Observable<ResponseWrapper<MatchQuestionResponse>> getMatchQuestions(
             @Query("unit") int unit
     );
     @POST("users")
@@ -66,5 +68,12 @@ public interface ApiService {
 
     @GET("exams")
     Observable<ResponseWrapper<List<ExamResponse>>> getExams();
+    @POST("exam-results")
+    Observable<ResponseWrapper<Void>> submitExamResult(@Body ExamResultRequest request);
+    @GET("exam-results/rank/{unit}/{classLevel}")
+    Observable<ResponseWrapper<List<RankResponse>>> getLeaderboard(
+            @Path("unit") int unit,
+            @Path("classLevel") long classLevel
+    );
 
 }

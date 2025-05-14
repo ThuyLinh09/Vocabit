@@ -37,4 +37,5 @@ public interface PreferencesService {
     Long getRole();
     void setUserId(Long userId);
     Long getUserId();
+
 }

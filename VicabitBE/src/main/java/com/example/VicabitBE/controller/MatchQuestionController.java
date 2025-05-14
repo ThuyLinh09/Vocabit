@@ -22,9 +22,10 @@ public class MatchQuestionController {
     private MatchQuestionService service;
 
     @GetMapping
-    public ApiResponse<List<MatchQuestionResponse>> getQuestionsByUnit(@RequestParam int unit) {
-        return ApiResponse.<List<MatchQuestionResponse>>builder()
-                .result(service.getRandomQuestionsByUnit(unit))
+    public ApiResponse<MatchQuestionResponse> getRandomQuestion(@RequestParam int unit) {
+        return ApiResponse.<MatchQuestionResponse>builder()
+                .result(service.getRandomQuestionByUnit(unit))
                 .build();
     }
+
 }

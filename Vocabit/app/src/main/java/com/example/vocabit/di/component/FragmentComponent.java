@@ -11,6 +11,7 @@ import com.example.vocabit.ui.matchQuestion.MatchQuestionFragment;
 import com.example.vocabit.ui.practice.PracticeFragment;
 import com.example.vocabit.ui.practice.ResultPracticeFragment;
 import com.example.vocabit.ui.profile.ProfileFragment;
+import com.example.vocabit.ui.rank.RankFragment;
 
 import dagger.Component;
 
@@ -25,5 +26,6 @@ public interface FragmentComponent {
     void inject(FillQuestionFragment fillQuestionFragment);
     void inject(ExtraLetterQuestionFragment extraLetterQuestionFragment);
     void inject(ResultPracticeFragment resultPracticeFragment);
+    void inject(RankFragment rankFragment);
 
 }

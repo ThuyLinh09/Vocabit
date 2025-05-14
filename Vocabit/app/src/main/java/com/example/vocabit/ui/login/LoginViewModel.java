@@ -66,6 +66,9 @@ public class LoginViewModel extends BaseViewModel {
         doLogin(pass, phone);
 
     }
+    public void onTestClicked() {
+        loginSuccess.setValue(true);
+    }
     private void doLogin(String password, String phoneNumber) {
         LoginRequest request = new LoginRequest(phoneNumber, password);
         compositeDisposable.add(repository.getApiService().login(request)
@@ -85,6 +88,7 @@ public class LoginViewModel extends BaseViewModel {
                         response -> {
                             hideLoading();
                             repository.getSharedPreferences().setToken(response.getResult().getToken());
+                            repository.getSharedPreferences().setString("username", phoneNumber);
                             Toast.makeText(context, context.getString(R.string.login_success), Toast.LENGTH_SHORT).show();
                             loginSuccess.setValue(true);
                         }, throwable -> {

@@ -20,10 +20,18 @@ public class PracticeService {
     PracticeRepository practiceRepository;
     PracticeMapper practiceMapper;
 
-    public List<PracticeResponse> getAllPractices() {
-        log.info("Getting all practice questions");
+    public List<PracticeResponse> getAllPractices(String role) {
+        log.info("Getting practice questions for role: {}", role);
 
-        List<Practice> practices = practiceRepository.findAll();
+        List<Practice> practices;
+
+        if ("guest".equalsIgnoreCase(role)) {
+            // Lấy ví dụ 5 câu cho khách
+            practices = practiceRepository.findTop2ByOrderByIdAsc();
+        } else {
+            // Lấy toàn bộ dữ liệu cho user
+            practices = practiceRepository.findAll();
+        }
 
         return practiceMapper.toPracticeList(practices);
     }

@@ -1,17 +1,39 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="10dp"
+        android:paddingBottom="30dp"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp"
+        android:layout_marginVertical="8dp">
 
+        <!-- Đường kẻ bên trái -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#FFBDBDBD" />
+
+        <!-- Tiêu đề Unit -->
         <TextView
             android:id="@+id/txt_name_unit"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:text="Unit"
-            android:textStyle="bold"
-            android:layout_gravity="center"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-    </FrameLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="12dp"
+            android:text="Unit 1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+
+        <!-- Đường kẻ bên phải -->
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"
+            android:background="#FFBDBDBD" />
+
+    </LinearLayout>
 </layout>

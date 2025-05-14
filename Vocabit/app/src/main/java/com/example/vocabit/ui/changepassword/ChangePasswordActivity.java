@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.vocabit.MVVMApplication;
 import com.example.vocabit.R;
 import com.example.vocabit.data.Repository;
 import com.example.vocabit.data.model.api.request.changepassword.ChangePasswordRequest;
@@ -42,12 +43,14 @@ public class ChangePasswordActivity extends AppCompatActivity {
     }
 
     private void changePassword() {
-        String token = prefs.getToken();
+        //String token = prefs.getToken();
+
+        Repository repository = ((MVVMApplication) getApplication()).getRepository();
+        String token = repository.getSharedPreferences().getToken();
         if (token == null) {
             Toast.makeText(this, "Bạn chưa đăng nhập", Toast.LENGTH_SHORT).show();
             return;
         }
-
         String username = JwtUtils.getUsernameFromToken(token);
         String newPassword = etNewPassword.getText().toString().trim();
 

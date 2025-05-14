@@ -1,5 +1,8 @@
 package com.example.vocabit.ui.matchQuestion;
 
+import static android.app.Activity.RESULT_OK;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +25,11 @@ public class MatchQuestionFragment extends BaseFragment<FragmentMatchQuestionBin
     private WordAdapter englishAdapter;
     private WordAdapter vietnameseAdapter;
 
-    public static MatchQuestionFragment newInstance(int unit) {
+    public static MatchQuestionFragment newInstance(int unit, boolean isExamMode) {
         MatchQuestionFragment fragment = new MatchQuestionFragment();
         Bundle args = new Bundle();
         args.putInt("unit", unit);
+        args.putBoolean("isExamMode", isExamMode);
         fragment.setArguments(args);
         return fragment;
     }
@@ -61,6 +65,8 @@ public class MatchQuestionFragment extends BaseFragment<FragmentMatchQuestionBin
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         int unit = getArguments() != null ? getArguments().getInt("unit", -1) : -1;
+        boolean isExamMode = getArguments() != null && getArguments().getBoolean("isExamMode", false); // Lấy giá trị từ Bundle
+
         if (unit < 0) {
             Toast.makeText(requireContext(), "Thiếu unit", Toast.LENGTH_SHORT).show();
             return;
@@ -79,21 +85,28 @@ public class MatchQuestionFragment extends BaseFragment<FragmentMatchQuestionBin
         viewModel.getVietnameseList().observe(getViewLifecycleOwner(), vietnameseAdapter::submitList);
         viewModel.getMatchedEnglish().observe(getViewLifecycleOwner(), englishAdapter::setMatchedWords);
         viewModel.getMatchedVietnamese().observe(getViewLifecycleOwner(), vietnameseAdapter::setMatchedWords);
-
         viewModel.getAllCorrect().observe(getViewLifecycleOwner(), correct -> {
             if (Boolean.TRUE.equals(correct)) {
-                viewModel.loadNext();
+                int score = viewModel.getScore().getValue() != null ? viewModel.getScore().getValue() : 0;
+                if (isExamMode) {
+                    Intent resultIntent = new Intent();
+                    resultIntent.putExtra("SCORE", score);
+                    requireActivity().setResult(RESULT_OK, resultIntent);
+                    requireActivity().finish();
+                } else {
+                    requireActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, ResultPracticeFragment.newInstance(score))
+                            .addToBackStack(null)
+                            .commit();
+                }
             }
         });
+
         viewModel.getCurrentQuestion().observe(getViewLifecycleOwner(), question -> {
             if (question == null) {
-                Toast.makeText(requireContext(), "Hoàn thành tất cả câu hỏi", Toast.LENGTH_SHORT).show();
-                int score = viewModel.getScore().getValue() != null ? viewModel.getScore().getValue() : 0;
-                requireActivity().getSupportFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_container, ResultPracticeFragment.newInstance(score))
-                        .addToBackStack(null)
-                        .commit();
+                Toast.makeText(requireContext(), "Không có câu hỏi", Toast.LENGTH_SHORT).show();
+                requireActivity().onBackPressed();
             }
         });
 
@@ -107,7 +120,7 @@ public class MatchQuestionFragment extends BaseFragment<FragmentMatchQuestionBin
             else vietnameseAdapter.showFeedback(pair.first, pair.second);
         });
         viewModel.getScore().observe(getViewLifecycleOwner(), score -> {
-            binding.tvScore.setText("Điểm: " + score);
+            binding.tvScore.setText("Score: " + score);
         });
         viewModel.start(unit);
     }

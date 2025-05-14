@@ -18,6 +18,7 @@ import com.example.vocabit.ui.matchQuestion.MatchQuestionViewModel;
 import com.example.vocabit.ui.practice.PracticeViewModel;
 import com.example.vocabit.ui.practice.ResultPracticeViewModel;
 import com.example.vocabit.ui.profile.ProfileViewModel;
+import com.example.vocabit.ui.rank.RankViewModel;
 
 import javax.inject.Named;
 
@@ -108,5 +109,11 @@ public class FragmentModule {
         ViewModelProviderFactory<ResultPracticeViewModel> factory = new ViewModelProviderFactory<>(ResultPracticeViewModel.class, supplier);
         return new ViewModelProvider(fragment, factory).get(ResultPracticeViewModel.class);
     }
-
+    @Provides
+    @FragmentScope
+    RankViewModel provideRankViewModel(Repository repository, Context application) {
+        Supplier<RankViewModel> supplier = () -> new RankViewModel(repository, (MVVMApplication)application);
+        ViewModelProviderFactory<RankViewModel> factory = new ViewModelProviderFactory<>(RankViewModel.class, supplier);
+        return new ViewModelProvider(fragment, factory).get(RankViewModel.class);
+    }
 }

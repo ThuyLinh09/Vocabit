@@ -13,6 +13,7 @@ public class JwtUtils {
 
             // Chuyển payload thành JSONObject
             JSONObject json = new JSONObject(payload);
+            System.out.println(payload);
 
             // Truy xuất giá trị 'sub' (nếu bạn sử dụng 'sub' cho username)
             return json.getString("sub");  // 'sub' chứa username nếu bạn đã dùng claim này

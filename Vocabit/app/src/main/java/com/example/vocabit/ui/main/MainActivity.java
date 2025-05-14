@@ -1,6 +1,7 @@
 package com.example.vocabit.ui.main;
 
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.example.vocabit.di.component.ActivityComponent;
 import com.example.vocabit.ui.exam.ExamFragment;
 import com.example.vocabit.ui.practice.PracticeFragment;
 import com.example.vocabit.ui.profile.ProfileFragment;
+import com.example.vocabit.ui.rank.RankFragment;
 
 public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewModel> {
     private Fragment practiceFragment = new PracticeFragment();
@@ -26,7 +28,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding, MainViewMode
         EdgeToEdge.enable(this);
         viewBinding.setMainActivity(this);
         viewBinding.setMainViewModel(viewModel);
-
+        View decorView = getWindow().getDecorView();
+        int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+        decorView.setSystemUiVisibility(uiOptions);
         active = practiceFragment;
         getSupportFragmentManager().beginTransaction()
                 .add(R.id.fragment_container, practiceFragment, "PRACTICE")

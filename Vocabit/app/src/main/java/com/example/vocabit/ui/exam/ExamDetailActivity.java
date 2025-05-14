@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Observer;
 
 import com.example.vocabit.BR;
 import com.example.vocabit.R;
@@ -39,6 +40,7 @@ public class ExamDetailActivity extends BaseActivity<ActivityExamDetailBinding, 
             return;
         }
 
+        // Observe to update UI when current part changes
         viewModel.currentPart.observe(this, partType -> {
             if (partType == null || isHandlingPart) return;
 
@@ -73,19 +75,40 @@ public class ExamDetailActivity extends BaseActivity<ActivityExamDetailBinding, 
                 startActivityForResult(intent, 100);
             }
         });
+        viewModel.getTotalScore().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer totalScore) {
+                // Cập nhật TextView hiển thị điểm số
+                viewBinding.tvTotalScore.setText(String.valueOf(totalScore));
+            }
+        });
 
-        // Khởi động phần đầu tiên (sau khi observer đã sẵn sàng)
+        viewModel.getDuration().observe(this, new Observer<Long>() {
+            @Override
+            public void onChanged(Long duration) {
+                // Cập nhật TextView hiển thị thời gian
+                viewBinding.tvTimeTaken.setText(viewModel.getFormattedDuration());
+            }
+        });
+        viewBinding.btnFinish.setOnClickListener(v -> {
+            finish();
+        });
         viewModel.startExam();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100) {
-            isHandlingPart = false; // Đã hoàn thành part, cho phép chạy part tiếp theo
-            viewModel.moveToNextPart(); // Cập nhật LiveData để gọi sang phần tiếp theo
+
+        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
+            isHandlingPart = false; // Đặt lại sau khi hoàn thành phần
+
+            int score = data.getIntExtra("SCORE", 0);
+            viewModel.addScore(score);
+            viewModel.moveToNextPart();
         }
     }
+
 
     @Override
     public int getLayoutId() {
@@ -102,4 +125,5 @@ public class ExamDetailActivity extends BaseActivity<ActivityExamDetailBinding, 
         buildComponent.inject(this);
     }
 }
+
 

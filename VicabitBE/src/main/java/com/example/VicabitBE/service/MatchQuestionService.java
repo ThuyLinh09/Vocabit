@@ -24,20 +24,21 @@ import java.util.List;
 public class MatchQuestionService {
     MatchQuestionRepository repository;
 
-    public List<MatchQuestionResponse> getRandomQuestionsByUnit(int unit) {
-        List<MatchQuestion> questions = repository.findRandom10ByUnit(unit);
+    public MatchQuestionResponse getRandomQuestionByUnit(int unit) {
+        MatchQuestion q = repository.findRandomByUnit(unit);
 
-        return questions.stream().map(q -> {
-            List<String> shuffledEn = new ArrayList<>(q.getChoices_en());
-            List<String> shuffledVn = new ArrayList<>(q.getChoices_vn());
-            Collections.shuffle(shuffledEn);
-            Collections.shuffle(shuffledVn);
+        if (q == null) return null; // hoặc throw NotFound nếu muốn
 
-            return MatchQuestionResponse.builder()
-                    .choices_en(shuffledEn)
-                    .choices_vn(shuffledVn)
-                    .correctMatches(q.getCorrectMatches()) // Có thể ẩn nếu không muốn gửi đáp án
-                    .build();
-        }).toList();
+        List<String> shuffledEn = new ArrayList<>(q.getChoices_en());
+        List<String> shuffledVn = new ArrayList<>(q.getChoices_vn());
+        Collections.shuffle(shuffledEn);
+        Collections.shuffle(shuffledVn);
+
+        return MatchQuestionResponse.builder()
+                .choices_en(shuffledEn)
+                .choices_vn(shuffledVn)
+                .correctMatches(q.getCorrectMatches()) // có thể bỏ nếu cần ẩn đáp án
+                .build();
     }
+
 }

@@ -6,10 +6,11 @@
     <color name="border_gray">#9F9696</color>
     <color name="btn_blue">#3CC3F0</color>
     <color name="btn_blue2">#9CABD1</color>
-    <color name="bg_green">#ABF058</color>
+    <color name="bg_green">#E2FBC5</color>
     <color name="menu_green">#10B981</color>
     <color name="toolbar_green">#033C29</color>
     <color name="btn_orange">#F6E25D35</color>
+    <color name="score">#F6D94113</color>
     <color name="selectedColor">#FF0000</color>
     <color name="defaultColor">#FFFFFF</color>
 

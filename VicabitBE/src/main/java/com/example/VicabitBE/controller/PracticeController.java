@@ -21,12 +21,27 @@ public class PracticeController {
 
     @GetMapping
     public ApiResponse<List<PracticeResponse>> getAllPractices() {
-        String username = SecurityContextHolder.getContext().getAuthentication().getName();
-        log.info("User {} is fetching all practices", username);
+        var auth = SecurityContextHolder.getContext().getAuthentication();
 
-        List<PracticeResponse> practices = practiceService.getAllPractices();
+        String role;
+
+        // Nếu không có authentication hoặc authentication chưa xác thực thì coi là guest
+        if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+            role = "guest";
+        } else {
+            role = auth.getAuthorities().stream()
+                    .map(grantedAuthority -> grantedAuthority.getAuthority())
+                    .findFirst()
+                    .orElse("guest");
+        }
+
+        log.info("Role: {}", role);
+
+        List<PracticeResponse> practices = practiceService.getAllPractices(role);
         return ApiResponse.<List<PracticeResponse>>builder()
                 .result(practices)
                 .build();
     }
+
+
 }
