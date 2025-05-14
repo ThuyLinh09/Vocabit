@@ -2,6 +2,13 @@
 -- use learning_english;
 -- Thêm các câu hỏi vào bảng ImageToTextQuestion
 
+insert into exam (id, unit, part1, part2, part3, part4)
+values
+(1,1,'IMAGE_TO_TEXT', 'FILL_IN_BLANK', 'EXTRA_LETTER', 'MATCHING'),
+(2,1,'IMAGE_TO_TEXT', 'FILL_IN_BLANK', 'EXTRA_LETTER', 'MATCHING'),
+(3,1,'IMAGE_TO_TEXT', 'FILL_IN_BLANK', 'EXTRA_LETTER', 'MATCHING'),
+(4,1,'IMAGE_TO_TEXT', 'FILL_IN_BLANK', 'EXTRA_LETTER', 'MATCHING');
+
 INSERT INTO image_to_text_question (id, unit, image_url, correct_option) 
 VALUES 
 (1, 1, 'https://veemart.scarpercrew.com/storage/fruits-and-veg/apple-158989157.jpg', 'Apple'),
