@@ -39,6 +39,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/**")
                         .permitAll()
                         .requestMatchers(HttpMethod.GET, "/practices/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/questions/image-to-text").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/questions/fill-in-blank").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/exam-results/rank/**").permitAll()
                         .anyRequest().authenticated());
         httpSecurity.oauth2ResourceServer(oath2 ->
                 oath2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder())

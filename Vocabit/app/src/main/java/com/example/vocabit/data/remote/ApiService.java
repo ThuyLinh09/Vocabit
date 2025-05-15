@@ -70,10 +70,9 @@ public interface ApiService {
     Observable<ResponseWrapper<List<ExamResponse>>> getExams();
     @POST("exam-results")
     Observable<ResponseWrapper<Void>> submitExamResult(@Body ExamResultRequest request);
-    @GET("exam-results/rank/{unit}/{classLevel}")
+    @GET("exam-results/rank/{unit}")
     Observable<ResponseWrapper<List<RankResponse>>> getLeaderboard(
-            @Path("unit") int unit,
-            @Path("classLevel") long classLevel
+            @Path("unit") int unit
     );
 
 }

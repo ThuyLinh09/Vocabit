@@ -27,7 +27,6 @@ public class RankFragment extends BaseFragment<FragmentRankBinding, RankViewMode
     private RankAdapter rankAdapter;
 
     private List<String> unitList = Arrays.asList("Unit 1", "Unit 2", "Unit 3");
-    private List<String> classLevelList = Arrays.asList("Class Level 1", "Class Level 2", "Class Level 3");
 
     @Nullable
     @Override
@@ -39,10 +38,6 @@ public class RankFragment extends BaseFragment<FragmentRankBinding, RankViewMode
         unitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerUnit.setAdapter(unitAdapter);
 
-        // Gán adapter cho Spinner Class Level
-        ArrayAdapter<String> classAdapter = new ArrayAdapter<>(requireContext(), android.R.layout.simple_spinner_item, classLevelList);
-        classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerClassLevel.setAdapter(classAdapter);
 
         // Thiết lập listener cho Spinner Unit
         binding.spinnerUnit.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -57,18 +52,6 @@ public class RankFragment extends BaseFragment<FragmentRankBinding, RankViewMode
             public void onNothingSelected(AdapterView<?> parentView) {}
         });
 
-        // Thiết lập listener cho Spinner Class Level
-        binding.spinnerClassLevel.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                // Cập nhật giá trị selectedClassLevel khi người dùng chọn Class Level
-                viewModel.selectedClassLevel = position + 1; // Giả sử giá trị level là 1, 2, 3...
-                fetchRankList(); // Gọi lại hàm lấy bảng xếp hạng
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parentView) {}
-        });
 
         // Khởi tạo RecyclerView
         rankAdapter = new RankAdapter();
@@ -79,9 +62,7 @@ public class RankFragment extends BaseFragment<FragmentRankBinding, RankViewMode
         viewModel.getRankList().observe(getViewLifecycleOwner(), new Observer<List<RankResponse>>() {
             @Override
             public void onChanged(List<RankResponse> rankList) {
-                if (rankList != null && !rankList.isEmpty()) {
-                    rankAdapter.setRankData(rankList);
-                }
+                rankAdapter.setRankData(rankList);
             }
         });
 

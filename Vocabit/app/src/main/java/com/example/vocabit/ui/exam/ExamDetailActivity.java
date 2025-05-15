@@ -124,6 +124,7 @@ public class ExamDetailActivity extends BaseActivity<ActivityExamDetailBinding, 
     public void performDependencyInjection(ActivityComponent buildComponent) {
         buildComponent.inject(this);
     }
+
 }
 
 
