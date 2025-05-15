@@ -37,6 +37,9 @@ public class ExamDetailViewModel extends BaseViewModel {
     private CountDownTimer countDownTimer;
     private final MutableLiveData<String> countdownTime = new MutableLiveData<>();
     private final long examDurationInMillis = 30 * 60 * 1000; // 30 phút
+    public LiveData<String> getCurrentPart() {
+        return currentPart;
+    }
 
     public ExamDetailViewModel(Repository repository, MVVMApplication application) {
         super(repository, application);
@@ -145,7 +148,6 @@ public class ExamDetailViewModel extends BaseViewModel {
                         }
                 ));
     }
-
     public String getFormattedDuration() {
         long seconds = duration.getValue() != null ? duration.getValue() / 1000 : 0;
         return seconds + " seconds";
@@ -163,6 +165,7 @@ public class ExamDetailViewModel extends BaseViewModel {
     public int getUnit() {
         return exam != null ? exam.getUnit() : 0;
     }
+
 }
 
 

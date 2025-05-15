@@ -62,9 +62,7 @@ public class RankFragment extends BaseFragment<FragmentRankBinding, RankViewMode
         viewModel.getRankList().observe(getViewLifecycleOwner(), new Observer<List<RankResponse>>() {
             @Override
             public void onChanged(List<RankResponse> rankList) {
-                if (rankList != null && !rankList.isEmpty()) {
-                    rankAdapter.setRankData(rankList);
-                }
+                rankAdapter.setRankData(rankList);
             }
         });
 
