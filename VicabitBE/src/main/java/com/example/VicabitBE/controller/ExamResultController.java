@@ -24,11 +24,10 @@ public class ExamResultController {
     private final ExamResultService examResultService;
     private final RankService rankService;
 
-    @GetMapping("/rank/{unit}/{classLevel}")
+    @GetMapping("/rank/{unit}")
     public ApiResponse<List<RankResponse>> getLeaderboard(
-            @PathVariable int unit,
-            @PathVariable long classLevel) {
-        List<RankResponse> ranks = rankService.getTop10ByUnitAndClassLevel(unit, classLevel);
+            @PathVariable int unit) {
+        List<RankResponse> ranks = rankService.getTop10ByUnitAndClassLevel(unit);
         return ApiResponse.<List<RankResponse>>builder()
                 .result(ranks)
                 .build();

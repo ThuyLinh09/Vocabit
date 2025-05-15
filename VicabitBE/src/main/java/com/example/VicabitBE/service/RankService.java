@@ -15,8 +15,8 @@ public class RankService {
     private final RankRepository examResultRepository;
     private final RankMapper leaderboardMapper;
 
-    public List<RankResponse> getTop10ByUnitAndClassLevel(int unit, long classLevel) {
-        var projections = examResultRepository.findTop10ByUnitAndClassLevel(unit, classLevel);
+    public List<RankResponse> getTop10ByUnitAndClassLevel(int unit) {
+        var projections = examResultRepository.findTop10ByUnitAndClassLevel(unit);
         return leaderboardMapper.toResponseList(projections);
     }
 }

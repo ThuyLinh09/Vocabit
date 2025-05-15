@@ -39,7 +39,7 @@ public class RankViewModel extends BaseFragmentViewModel {
     public void fetchRankList() {
         showLoading();
 
-        compositeDisposable.add(repository.getApiService().getLeaderboard(selectedUnit, selectedClassLevel)
+        compositeDisposable.add(repository.getApiService().getLeaderboard(selectedUnit)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .retryWhen(throwable ->
